@@ -1,0 +1,30 @@
+{
+    "name"       : "uaktags/NGCSv1",
+    "type"       : "library",
+    "description": "1&1 NGCS API v1 PHP 5.4+ library",
+    "keywords"   : ["DigitalOcean", "API", "Cloud Hosting", "SSD", "VPS"],
+    "homepage"   : "https://github.com/uaktags/NGCSv1",
+    "license"    : "MIT",
+
+    "require": {
+        "php": ">=5.4.0",
+        "nategood/httpful": "0.2.19"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "NGCSv1\\": "src/"
+        },
+        "files": ["src/functions.php"]
+    },
+
+    "config": {
+        "preferred-install": "dist"
+    },
+
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
