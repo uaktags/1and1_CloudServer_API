@@ -12,10 +12,9 @@
 namespace NGCSv1\Api;
 
 use NGCSv1\Entity\Action as ActionEntity;
-use NGCSv1\Entity\Server as serverEntity;
-use NGCSv1\Entity\Image as ImageEntity;
-use NGCSv1\Entity\Kernel as KernelEntity;
-use NGCSv1\Entity\Upgrade as UpgradeEntity;
+use NGCSv1\Entity\Server as ServerEntity;
+use NGCSv1\Entity\Hardware as HardwareEntity;
+
 
 /**
  * @author Tim Garrity <timgarrity89@gmail.com>
@@ -62,28 +61,30 @@ class Server extends AbstractApi
      *
      * @return serverEntity
      */
-    public function create($name, $region, $size, $image, $backups = false, $ipv6 = false,
-        $privateNetworking = false, array $sshKeys = array(), $userData = ""
-    ) {
+    public function create($name ='New Server', $hardware, $appliance, $description='', $password ='', $power=true, $firewall=0, $ip=0, $loadbalance=0, $monitor=0)
+    {
         $headers = array('Content-Type: application/json');
 
         $data = array(
-            'name' => $name,
-            'region' => $region,
-            'size' => $size,
-            'image' => $image,
-            'backups' => \NGCSv1\bool_to_string($backups),
-            'ipv6' => \NGCSv1\bool_to_string($ipv6),
-            'private_networking' => \NGCSv1\bool_to_string($privateNetworking)
+            'name'=>$name,
+            'hardware'=>$hardware,
+            'appliance_id'=>$appliance,
+            'password'=>$password,
+            'description'=>$description,
+            'power_on'=>$power
         );
 
-        if (0 < count($sshKeys)) {
-            $data["ssh_keys"] = $sshKeys;
-        }
+        if($firewall !=0)
+            $data['firewall_policy_id']=$firewall;
 
-        if (!empty($userData)) {
-            $data["user_data"] = $userData;
-        }
+        if($ip!=0)
+            $data['ip_id']=$ip;
+
+        if($loadbalance!=0)
+            $data['load_balancer_id'] = $loadbalance;
+
+        if($monitor!=0)
+            $data['monitoring_policy_id']=$monitor;
 
         $content = json_encode($data);
 
@@ -100,299 +101,60 @@ class Server extends AbstractApi
      */
     public function delete($id)
     {
-        $headers = array('Content-Type: application/x-www-form-urlencoded');
-        $this->adapter->delete(sprintf('%s/servers/%d', self::ENDPOINT, $id), $headers);
+        $this->adapter->delete(sprintf('%s/servers/%s', self::ENDPOINT, $id));
     }
 
-    /**
-     * @param int $id
-     *
-     * @throws \RuntimeException
-     *
-     * @return KernelEntity[]
-     */
-    public function getAvailableKernels($id)
+    public function renameServer($id, $name)
     {
-        $kernels = $this->adapter->get(sprintf('%s/servers/%d/kernels', self::ENDPOINT, $id));
-        $kernels = json_decode($kernels);
-
-        $this->meta = $this->extractMeta($kernels);
-
-        return array_map(function ($kernel) {
-            return new KernelEntity($kernel);
-        }, $kernels->kernels);
+        $content = array(
+            'name' => $name
+        );
+        $this->adapter->post(sprintf('%s/servers/%s', self::ENDPOINT, $id), $content);
     }
 
-    /**
-     * @param int $id
-     *
-     * @return ImageEntity[]
-     */
+    public function setDescription($id, $description)
+    {
+        $content = array(
+            'description' => $description
+        );
+        $this->adapter->post(sprintf('%s/servers/%s', self::ENDPOINT, $id), $content);
+    }
+
+    public function getHardware($id)
+    {
+        $server = $this->adapter->get(sprintf('%s/servers/%s/hardware', self::ENDPOINT, $id));
+        return new HardwareEntity($server['body']);
+    }
+
+    public function getStatus($id)
+    {
+        $server = $this->adapter->get(sprintf('%s/servers/%s/status', self::ENDPOINT, $id));
+        return new serverEntity($server['body']);
+    }
+
+    public function getDVD($id)
+    {
+        $server = $this->adapter->get(sprintf('%s/servers/%s/dvd', self::ENDPOINT, $id));
+        return new serverEntity($server['body']);
+    }
+
+    public function getNetworks($id)
+    {
+        $server = $this->adapter->get(sprintf('%s/servers/%s/private_networks', self::ENDPOINT, $id));
+        return new serverEntity($server['body']);
+    }
+
     public function getSnapshots($id)
     {
-        $snapshots = $this->adapter->get(sprintf('%s/servers/%d/snapshots?per_page=%d', self::ENDPOINT, $id, PHP_INT_MAX));
-        $snapshots = json_decode($snapshots);
-
-        $this->meta = $this->extractMeta($snapshots);
-
-        return array_map(function ($snapshot) {
-            $snapshot = new ImageEntity($snapshot);
-
-            return $snapshot;
-        }, $snapshots->snapshots);
+        $server = $this->adapter->get(sprintf('%s/servers/%s/snapshots', self::ENDPOINT, $id));
+        return new serverEntity($server['body']);
     }
 
-    /**
-     * @param int $id
-     *
-     * @return ImageEntity[]
-     */
-    public function getBackups($id)
+    public function cloneServer($id)
     {
-        $backups = $this->adapter->get(sprintf('%s/servers/%d/backups?per_page=%d', self::ENDPOINT, $id, PHP_INT_MAX));
-        $backups = json_decode($backups);
-
-        $this->meta = $this->extractMeta($backups);
-
-        return array_map(function ($backup) {
-            return new ImageEntity($backup);
-        }, $backups->backups);
-    }
-
-    /**
-     * @param int $id
-     *
-     * @return ActionEntity[]
-     */
-    public function getActions($id)
-    {
-        $actions = $this->adapter->get(sprintf('%s/servers/%d/actions?per_page=%d', self::ENDPOINT, $id, PHP_INT_MAX));
-        $actions = json_decode($actions);
-
-        $this->meta = $this->extractMeta($actions);
-
-        return array_map(function ($action) {
-            return new ActionEntity($action);
-        }, $actions->actions);
-    }
-
-    /**
-     * @param int $id
-     * @param int $actionId
-     *
-     * @return ActionEntity
-     */
-    public function getActionById($id, $actionId)
-    {
-        $action = $this->adapter->get(sprintf('%s/servers/%d/actions/%d', self::ENDPOINT, $id, $actionId));
-        $action = json_decode($action);
-
-        return new ActionEntity($action->action);
-    }
-
-    /**
-     * @param int $id
-     *
-     * @throws \RuntimeException
-     *
-     * @return ActionEntity
-     */
-    public function reboot($id)
-    {
-        return $this->executeAction($id, array('type' => 'reboot'));
-    }
-
-    /**
-     * @param int $id
-     *
-     * @throws \RuntimeException
-     *
-     * @return ActionEntity
-     */
-    public function powerCycle($id)
-    {
-        return $this->executeAction($id, array('type' => 'power_cycle'));
-    }
-
-    /**
-     * @param int $id
-     *
-     * @throws \RuntimeException
-     *
-     * @return ActionEntity
-     */
-    public function shutdown($id)
-    {
-        return $this->executeAction($id, array('type' => 'shutdown'));
-    }
-
-    /**
-     * @param int $id
-     *
-     * @throws \RuntimeException
-     *
-     * @return ActionEntity
-     */
-    public function powerOff($id)
-    {
-        return $this->executeAction($id, array('type' => 'power_off'));
-    }
-
-    /**
-     * @param int $id
-     *
-     * @throws \RuntimeException
-     *
-     * @return ActionEntity
-     */
-    public function powerOn($id)
-    {
-        return $this->executeAction($id, array('type' => 'power_on'));
-    }
-
-    /**
-     * @param int $id
-     *
-     * @throws \RuntimeException
-     *
-     * @return ActionEntity
-     */
-    public function passwordReset($id)
-    {
-        return $this->executeAction($id, array('type' => 'password_reset'));
-    }
-
-    /**
-     * @param int    $id
-     * @param string $size
-     * @param bool   $disk  (optional)
-     *
-     * @throws \RuntimeException
-     *
-     * @return ActionEntity
-     */
-    public function resize($id, $size, $disk = true)
-    {
-        return $this->executeAction($id, array('type' => 'resize', 'size' => $size, 'disk' => $disk));
-    }
-
-    /**
-     * @param int $id
-     * @param int $image
-     *
-     * @throws \RuntimeException
-     *
-     * @return ActionEntity
-     */
-    public function restore($id, $image)
-    {
-        return $this->executeAction($id, array('type' => 'restore', 'image' => $image));
-    }
-
-    /**
-     * @param int        $id
-     * @param int|string $image
-     *
-     * @throws \RuntimeException
-     *
-     * @return ActionEntity
-     */
-    public function rebuild($id, $image)
-    {
-        return $this->executeAction($id, array('type' => 'rebuild', 'image' => $image));
-    }
-
-    /**
-     * @param int    $id
-     * @param string $name
-     *
-     * @throws \RuntimeException
-     *
-     * @return ActionEntity
-     */
-    public function rename($id, $name)
-    {
-        return $this->executeAction($id, array('type' => 'rename', 'name' => $name));
-    }
-
-    /**
-     * @param int $id
-     * @param int $kernel
-     *
-     * @throws \RuntimeException
-     *
-     * @return ActionEntity
-     */
-    public function changeKernel($id, $kernel)
-    {
-        return $this->executeAction($id, array('type' => 'change_kernel', 'kernel' => $kernel));
-    }
-
-    /**
-     * @param int $id
-     *
-     * @throws \RuntimeException
-     *
-     * @return ActionEntity
-     */
-    public function enableIpv6($id)
-    {
-        return $this->executeAction($id, array('type' => 'enable_ipv6'));
-    }
-
-    /**
-     * @param int $id
-     *
-     * @throws \RuntimeException
-     *
-     * @return ActionEntity
-     */
-    public function disableBackups($id)
-    {
-        return $this->executeAction($id, array('type' => 'disable_backups'));
-    }
-
-    /**
-     * @param int $id
-     *
-     * @throws \RuntimeException
-     *
-     * @return ActionEntity
-     */
-    public function enablePrivateNetworking($id)
-    {
-        return $this->executeAction($id, array('type' => 'enable_private_networking'));
-    }
-
-    /**
-     * @param int    $id
-     * @param string $name
-     *
-     * @throws \RuntimeException
-     *
-     * @return ActionEntity
-     */
-    public function snapshot($id, $name)
-    {
-        return $this->executeAction($id, array('type' => 'snapshot', 'name' => $name));
-    }
-
-    /**
-     * @param int   $id
-     * @param array $options
-     *
-     * @throws \RuntimeException
-     *
-     * @return ActionEntity
-     */
-    private function executeAction($id, array $options)
-    {
-        $headers = array('Content-Type: application/json');
-        $content = json_encode($options);
-
-        $action = $this->adapter->post(sprintf('%s/servers/%d/actions', self::ENDPOINT, $id), $headers, $content);
-        $action = json_decode($action);
-
-        return new ActionEntity($action->action);
+        $content = array(
+            'server_id' => $id
+        );
+        $this->adapter->post(sprintf('%s/servers/%s/clone', self::ENDPOINT, $id), $content);
     }
 }

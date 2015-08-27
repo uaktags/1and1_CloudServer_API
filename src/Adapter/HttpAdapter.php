@@ -60,11 +60,12 @@ class HttpAdapter extends AbstractAdapter implements AdapterInterface
      */
     public function delete($url, array $headers = array())
     {
-        $response = $this->browser->delete($url, $headers);
+        $response = Request::delete($url)
+            ->addHeader("Accept", "application,json")
+            ->addHeader("X-TOKEN", $this->api)
+            ->send();
 
-        if (!$response->isSuccessful()) {
-            throw $this->handleResponse($response);
-        }
+        return array('code'=>$response->code, 'body'=>$response->body);
     }
 
     /**
@@ -72,13 +73,13 @@ class HttpAdapter extends AbstractAdapter implements AdapterInterface
      */
     public function put($url, array $headers = array(), $content = '')
     {
-        $response = $this->browser->put($url, $headers, $content);
+        $response = Request::put($url)
+            ->addHeader("Accept", "application,json")
+            ->addHeader("X-TOKEN", $this->api)
+            ->body($content)
+            ->send();
 
-        if (!$response->isSuccessful()) {
-            throw $this->handleResponse($response);
-        }
-
-        return $response->getContent();
+        return array('code'=>$response->code, 'body'=>$response->body);
     }
 
     /**
@@ -86,13 +87,13 @@ class HttpAdapter extends AbstractAdapter implements AdapterInterface
      */
     public function post($url, array $headers = array(), $content = '')
     {
-        $response = $this->browser->post($url, $headers, $content);
+        $response = Request::post($url)
+            ->addHeader("Accept", "application,json")
+            ->addHeader("X-TOKEN", $this->api)
+            ->body($content)
+            ->send();
 
-        if (!$response->isSuccessful()) {
-            throw $this->handleResponse($response);
-        }
-
-        return $response->getContent();
+        return array('code'=>$response->code, 'body'=>$response->body);
     }
 
     /**
