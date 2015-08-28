@@ -20,7 +20,7 @@ use NGCSv1\Entity\MonitorCenter as MonitorEntity;
 class MonitorCenter extends AbstractApi
 {
     /**
-     * @return serverEntity[]
+     * @return MonitorEntity[]
      */
     public function getAll()
     {
@@ -28,7 +28,7 @@ class MonitorCenter extends AbstractApi
 
         return array_map(function ($server) {
             return new MonitorEntity($server);
-        }, $monitor['body']);
+        }, $monitor);
     }
 
     /**
@@ -40,27 +40,7 @@ class MonitorCenter extends AbstractApi
      */
     public function getById($id)
     {
-        $server = $this->adapter->get(sprintf('%s/monitoring_center/%s', self::ENDPOINT, $id));
-        return new MonitorEntity($server['body']);
+        $monitor = $this->adapter->get(sprintf('%s/monitoring_center/%s', self::ENDPOINT, $id));
+        return new MonitorEntity($monitor);
     }
-
-    /**
-     * @return MonitorEntity
-     */
-    public function create(  )
-    {
-        //return new MonitorEntity();
-    }
-
-    /**
-     * @param int $id
-     *
-     * @throws \RuntimeException
-     */
-    public function delete($id)
-    {
-
-    }
-
-
 }

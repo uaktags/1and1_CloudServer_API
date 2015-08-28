@@ -11,22 +11,22 @@
 
 namespace NGCSv1\Api;
 
-use NGCSv1\Entity\DVD as DVDEntity;
+use NGCSv1\Entity\Log as LogEntity;
 
 /**
  * @author Tim Garrity <timgarrity89@gmail.com>
  */
-class DVD extends AbstractApi
+class Logs extends AbstractApi
 {
     /**
-     * @return dvdEntity[]
+     * @return serverEntity[]
      */
     public function getAll()
     {
-        $servers = $this->adapter->get(sprintf('%s/dvd_isos', self::ENDPOINT));
+        $servers = $this->adapter->get(sprintf('%s/logs', self::ENDPOINT));
 
         return array_map(function ($server) {
-            return new DVDEntity($server);
+            return new LogEntity($server);
         }, $servers);
     }
 
@@ -35,11 +35,11 @@ class DVD extends AbstractApi
      *
      * @throws \RuntimeException
      *
-     * @return DVDEntity
+     * @return serverEntity
      */
     public function getById($id)
     {
-        $server = $this->adapter->get(sprintf('%s/dvd_isos/%s', self::ENDPOINT, $id));
-        return new DVDEntity($server);
+        $server = $this->adapter->get(sprintf('%s/logs/%s', self::ENDPOINT, $id));
+        return new LogEntity($server);
     }
 }

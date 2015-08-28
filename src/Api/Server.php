@@ -11,7 +11,7 @@
 
 namespace NGCSv1\Api;
 
-use NGCSv1\Entity\Action as ActionEntity;
+use NGCSv1\Entity\PrivateNetwork as PrivateNetworkEntity;
 use NGCSv1\Entity\Server as ServerEntity;
 use NGCSv1\Entity\Hardware as HardwareEntity;
 
@@ -138,9 +138,25 @@ class Server extends AbstractApi
         return new serverEntity($server);
     }
 
+    public function unloadDVD($id)
+    {
+        return $this->adapter->delete(sprintf('%s/servers/%s/dvd', self::ENDPOINT, $id));
+    }
+
+    public function loadDVD($id, $dvdid)
+    {
+        return $this->adapter->put(sprintf('%s/servers/%s/dvd', self::ENDPOINT, $id), array('id' => $dvdid));
+    }
+
     public function getNetworks($id)
     {
         $server = $this->adapter->get(sprintf('%s/servers/%s/private_networks', self::ENDPOINT, $id));
+        return new serverEntity($server);
+    }
+
+    public function addNetworkToServer($id, $networkID)
+    {
+        $server = $this->adapter->post(sprintf('%s/servers/%s/private_networks', self::ENDPOINT, $id), array('id' => $networkID));
         return new serverEntity($server);
     }
 
@@ -150,11 +166,17 @@ class Server extends AbstractApi
         return new serverEntity($server);
     }
 
+    public function getNetworkByID($id, $networkID)
+    {
+        $server = $this->adapter->get(sprintf('%s/servers/%s/private_networks/%s', self::ENDPOINT, $id, $networkID));
+        return new PrivateNetworkEntity($server);
+    }
+
     public function cloneServer($id)
     {
         $content = array(
             'server_id' => $id
         );
-        $this->adapter->post(sprintf('%s/servers/%s/clone', self::ENDPOINT, $id), $content);
+        return $this->adapter->post(sprintf('%s/servers/%s/clone', self::ENDPOINT, $id), $content);
     }
 }
