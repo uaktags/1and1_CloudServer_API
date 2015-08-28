@@ -24,25 +24,13 @@ class Image extends AbstractApi
      *
      * @return ImageEntity[]
      */
-    public function getAll(array $criteria = [])
+    public function getAll()
     {
-        $query = sprintf('%s/images?per_page=%d', self::ENDPOINT, PHP_INT_MAX);
-
-        if (isset($criteria['type']) && in_array($criteria['type'], ['distribution', 'application'])) {
-            $query = sprintf('%s&type=%s', $query, $criteria['type']);
-        }
-
-        if (isset($criteria['private']) && true === (boolean) $criteria['private']) {
-            $query = sprintf('%s&private=true', $query);
-        }
-
-        $images = $this->adapter->get($query);
-        $images = json_decode($images);
-        $this->extractMeta($images);
+        $images = $this->adapter->get(sprintf('%s/images', self::ENDPOINT));
 
         return array_map(function ($image) {
             return new ImageEntity($image);
-        }, $images->images);
+        }, $images);
     }
 
     /**
@@ -52,9 +40,35 @@ class Image extends AbstractApi
      */
     public function getById($id)
     {
-        $image = $this->adapter->get(sprintf('%s/images/%d', self::ENDPOINT, $id));
-        $image = json_decode($image);
+        $image = $this->adapter->get(sprintf('%s/images/%s', self::ENDPOINT, $id));
 
-        return new ImageEntity($image->image);
+        return new ImageEntity($image);
+    }
+
+    public function create($serverID, $name, $frequency, $num_images, $description = Null)
+    {
+        $data = [
+            'server_id' => $serverID,
+            'name' => $name,
+            'frequency' => $frequency,
+            'num_images' => $num_images,
+            'description' => $description
+        ];
+        return $this->adapter->post(sprintf('%s/images', self::ENDPOINT), $data);
+    }
+
+    public function delete($id)
+    {
+        return $this->adapter->delete(sprintf('%s/images/%s', self::ENDPOINT, $id));
+    }
+
+    public function modifyName($id, $name)
+    {
+        return $this->adapter->put(sprintf('%s/images/%s', self::ENDPOINT, $id), array('name'=>$name));
+    }
+
+    public function modifyDescription($id, $description)
+    {
+        return $this->adapter->put(sprintf('%s/images/%s', self::ENDPOINT, $id), array('description'=>$description));
     }
 }

@@ -14,6 +14,7 @@ namespace NGCSv1\Adapter;
 use Httpful\Request;
 use NGCSv1\Exception\ExceptionInterface;
 use Httpful\Httpful;
+use NGCSv1\Exception\ResponseException;
 
 /**
  * @author Tim Garrity <timgarrity89@gmail.com>
@@ -52,7 +53,11 @@ class HttpAdapter extends AbstractAdapter implements AdapterInterface
             ->addHeader("Accept" , "application/json")
             ->addHeader('X-TOKEN', $this->api)
             ->send();
-        return array('code'=>$response->code, 'body'=>$response->body);
+
+        if($this->isResponseOk($response->code))
+        {
+            return $response->body;
+        }
     }
 
     /**
@@ -65,7 +70,10 @@ class HttpAdapter extends AbstractAdapter implements AdapterInterface
             ->addHeader("X-TOKEN", $this->api)
             ->send();
 
-        return array('code'=>$response->code, 'body'=>$response->body);
+        if($this->isResponseOk($response->code))
+        {
+            return $response->body;
+        }
     }
 
     /**
@@ -79,7 +87,10 @@ class HttpAdapter extends AbstractAdapter implements AdapterInterface
             ->body($content)
             ->send();
 
-        return array('code'=>$response->code, 'body'=>$response->body);
+        if($this->isResponseOk($response->code))
+        {
+            return $response->body;
+        }
     }
 
     /**
@@ -96,20 +107,34 @@ class HttpAdapter extends AbstractAdapter implements AdapterInterface
         return array('code'=>$response->code, 'body'=>$response->body);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLatestResponseHeaders()
+    public function isResponseOk($code)
     {
-        if (null === $response = $this->browser->getLastResponse()) {
-            return;
+        switch($code) {
+            case '200':
+                return true;
+            case '201':
+                return true;
+            case '202':
+                return true;
+            case '400':
+                throw new ResponseException('Bad Request Made', '400');
+            case '401':
+                throw new ResponseException('Unauthorized API Token', '401');
+            case '403':
+                throw new ResponseException('Forbidden Command', '403');
+            case '404':
+                throw new ResponseException('Command Not Found', '404');
+            case '405':
+                throw new ResponseException('Method Now Allowed', '405');
+            case '406':
+                throw new ResponseException('IP Not Allowed Access', '406');
+            case '429':
+                throw new ResponseException('Too Many Requests Per Hour', '429');
+            case '500':
+                throw new ResponseException('Internal Server Error. Contact Admin', '500');
+            default:
+                throw new ResponseException('Unknown Error');
         }
-
-        return array(
-            'reset'     => (int) $response->getHeader('RateLimit-Reset'),
-            'remaining' => (int) $response->getHeader('RateLimit-Remaining'),
-            'limit'     => (int) $response->getHeader('RateLimit-Limit'),
-        );
     }
 
     /**

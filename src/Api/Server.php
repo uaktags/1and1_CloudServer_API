@@ -30,7 +30,7 @@ class Server extends AbstractApi
 
         return array_map(function ($server) {
             return new serverEntity($server);
-        }, $servers['body']);
+        }, $servers);
     }
 
     /**
@@ -43,7 +43,7 @@ class Server extends AbstractApi
     public function getById($id)
     {
         $server = $this->adapter->get(sprintf('%s/servers/%s', self::ENDPOINT, $id));
-        return new serverEntity($server['body']);
+        return new serverEntity($server);
     }
 
     /**
@@ -123,31 +123,31 @@ class Server extends AbstractApi
     public function getHardware($id)
     {
         $server = $this->adapter->get(sprintf('%s/servers/%s/hardware', self::ENDPOINT, $id));
-        return new HardwareEntity($server['body']);
+        return new HardwareEntity($server);
     }
 
     public function getStatus($id)
     {
         $server = $this->adapter->get(sprintf('%s/servers/%s/status', self::ENDPOINT, $id));
-        return new serverEntity($server['body']);
+        return new serverEntity($server);
     }
 
     public function getDVD($id)
     {
         $server = $this->adapter->get(sprintf('%s/servers/%s/dvd', self::ENDPOINT, $id));
-        return new serverEntity($server['body']);
+        return new serverEntity($server);
     }
 
     public function getNetworks($id)
     {
         $server = $this->adapter->get(sprintf('%s/servers/%s/private_networks', self::ENDPOINT, $id));
-        return new serverEntity($server['body']);
+        return new serverEntity($server);
     }
 
     public function getSnapshots($id)
     {
         $server = $this->adapter->get(sprintf('%s/servers/%s/snapshots', self::ENDPOINT, $id));
-        return new serverEntity($server['body']);
+        return new serverEntity($server);
     }
 
     public function cloneServer($id)
