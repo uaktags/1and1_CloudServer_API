@@ -11,22 +11,22 @@
 
 namespace NGCSv1\Api;
 
-use NGCSv1\Entity\FirewallPolicy as FirewallEntity;
+use NGCSv1\Entity\Log as LogEntity;
 
 /**
  * @author Tim Garrity <timgarrity89@gmail.com>
  */
-class FirewallPolicy extends AbstractApi
+class Users extends AbstractApi
 {
     /**
      * @return serverEntity[]
      */
     public function getAll()
     {
-        $servers = $this->adapter->get(sprintf('%s/firewall_policies', self::ENDPOINT));
+        $servers = $this->adapter->get(sprintf('%s/logs', self::ENDPOINT));
 
         return array_map(function ($server) {
-            return new FirewallEntity($server);
+            return new LogEntity($server);
         }, $servers);
     }
 
@@ -39,9 +39,7 @@ class FirewallPolicy extends AbstractApi
      */
     public function getById($id)
     {
-        $server = $this->adapter->get(sprintf('%s/firewall_policies/%s', self::ENDPOINT, $id));
-        return new FirewallEntity($server);
+        $server = $this->adapter->get(sprintf('%s/logs/%s', self::ENDPOINT, $id));
+        return new LogEntity($server);
     }
-
-
 }

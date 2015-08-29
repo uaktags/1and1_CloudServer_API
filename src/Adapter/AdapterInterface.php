@@ -54,9 +54,4 @@ interface AdapterInterface
      * @return string
      */
     public function post($url, array $headers = array(), $content = '');
-
-    /**
-     * @return null|array
-     */
-    public function getLatestResponseHeaders();
 }

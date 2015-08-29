@@ -27,7 +27,7 @@ class PublicIP extends AbstractApi
 
         return array_map(function ($ip) {
             return new PublicIPEntity($ip);
-        }, $ips['body']);
+        }, $ips);
     }
 
     /**
@@ -40,7 +40,7 @@ class PublicIP extends AbstractApi
     public function getById($id)
     {
         $ip = $this->adapter->get(sprintf('%s/public_ips/%s', self::ENDPOINT, $id));
-        return new serverEntity($ip['body']);
+        return new serverEntity($ip);
     }
 
 

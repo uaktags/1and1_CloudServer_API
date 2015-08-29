@@ -109,7 +109,7 @@ class Server extends AbstractApi
         $content = array(
             'name' => $name
         );
-        $this->adapter->post(sprintf('%s/servers/%s', self::ENDPOINT, $id), $content);
+        $this->adapter->put(sprintf('%s/servers/%s?server_id={$id}', self::ENDPOINT, $id), $content);
     }
 
     public function setDescription($id, $description)
@@ -117,7 +117,7 @@ class Server extends AbstractApi
         $content = array(
             'description' => $description
         );
-        $this->adapter->post(sprintf('%s/servers/%s', self::ENDPOINT, $id), $content);
+        $this->adapter->put(sprintf('%s/servers/%s?server_id={$id}', self::ENDPOINT, $id), $content);
     }
 
     public function getHardware($id)
@@ -145,7 +145,7 @@ class Server extends AbstractApi
 
     public function loadDVD($id, $dvdid)
     {
-        return $this->adapter->put(sprintf('%s/servers/%s/dvd', self::ENDPOINT, $id), array('id' => $dvdid));
+        return $this->adapter->put(sprintf('%s/servers/%s/dvd?server_id={$id}', self::ENDPOINT, $id), array('id' => $dvdid));
     }
 
     public function getNetworks($id)
