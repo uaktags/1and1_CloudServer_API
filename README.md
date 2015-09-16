@@ -6,22 +6,22 @@ A PHP5.4 wrapper for 1&1's New CloudServer API. Based off of DigitalOceanV2 by t
 Status
 ------
 
-API | Entity | Documentation |
---- | ------ | ------------- |
-[Servers](https://cloudpanel-api.1and1.com/documentation/v1/#_servers) | [30%] | [40%] | (https://github.com/uaktags/NGCSv1#servers) |
-[Images](https://cloudpanel-api.1and1.com/documentation/v1/#_images) | [0%] | [0%] | (https://github.com/uaktags/NGCSv1#images) |
-[Shared Storages](https://cloudpanel-api.1and1.com/documentation/v1/#_shared_storages) | [0%] | [0%] | (https://github.com/uaktags/NGCSv1#shared_storages) |
-[Firewall Policies](https://cloudpanel-api.1and1.com/documentation/v1/#_firewall_policies) | [0%] | [0%] | (https://github.com/uaktags/NGCSv1#firewall_policies) |
-[PublicIPs](https://cloudpanel-api.1and1.com/documentation/v1/#_public_ips) | [0%] | [0%] | (https://github.com/uaktags/NGCSv1#public_ips) |
-[Private Networks](https://cloudpanel-api.1and1.com/documentation/v1/#_private_networks) | [0%] | [0%] | (https://github.com/uaktags/NGCSv1#private_networks) |
-[Monitoring Center](https://cloudpanel-api.1and1.com/documentation/v1/#_monitoring_center) | [100%] | [0%] | (https://github.com/uaktags/NGCSv1#monitoring_center) |
-[Monitoring Policies](https://cloudpanel-api.1and1.com/documentation/v1/#_monitoring_policies) | [0%] | [0%] | (https://github.com/uaktags/NGCSv1#monitoring_policies) |
-[Logs](https://cloudpanel-api.1and1.com/documentation/v1/#_logs) | [100%] | [100%] | (https://github.com/uaktags/NGCSv1#logs) |
-[Users](https://cloudpanel-api.1and1.com/documentation/v1/#_users) | [0%] | [0%] | (https://github.com/uaktags/NGCSv1#users) |
-[Usages](https://cloudpanel-api.1and1.com/documentation/v1/#_usages) | [100%] | [0%] | (https://github.com/uaktags/NGCSv1#usages) |
-[Server Appliances](https://cloudpanel-api.1and1.com/documentation/v1/#_server_appliances) | [100%] | [0%] | (https://github.com/uaktags/NGCSv1#server_appliances) |
-[DVD ISO](https://cloudpanel-api.1and1.com/documentation/v1/#_dvd_iso) | [100%] | [20%] | (https://github.com/uaktags/NGCSv1#dvd_iso) |
-[Load Balancers](https://cloudpanel-api.1and1.com/documentation/v1/#_load_balancers) | [0%] | [0%] | (https://github.com/uaktags/NGCSv1#load_balancer) |
+API | Documentation |
+--- | ------------- |
+[Servers](https://cloudpanel-api.1and1.com/documentation/v1/#_servers) | [30%](https://github.com/uaktags/NGCSv1#servers) | 
+[Images](https://cloudpanel-api.1and1.com/documentation/v1/#_images) | [0%](https://github.com/uaktags/NGCSv1#images) | 
+[Shared Storages](https://cloudpanel-api.1and1.com/documentation/v1/#_shared_storages) | [0%](https://github.com/uaktags/NGCSv1#shared_storages) | 
+[Firewall Policies](https://cloudpanel-api.1and1.com/documentation/v1/#_firewall_policies) | [0%](https://github.com/uaktags/NGCSv1#firewall_policies) | 
+[PublicIPs](https://cloudpanel-api.1and1.com/documentation/v1/#_public_ips) | [0%](https://github.com/uaktags/NGCSv1#public_ips) | 
+[Private Networks](https://cloudpanel-api.1and1.com/documentation/v1/#_private_networks) | [0%](https://github.com/uaktags/NGCSv1#private_networks) | 
+[Monitoring Center](https://cloudpanel-api.1and1.com/documentation/v1/#_monitoring_center) | [0%](https://github.com/uaktags/NGCSv1#monitoring_center) | 
+[Monitoring Policies](https://cloudpanel-api.1and1.com/documentation/v1/#_monitoring_policies) | [0%](https://github.com/uaktags/NGCSv1#monitoring_policies) | 
+[Logs](https://cloudpanel-api.1and1.com/documentation/v1/#_logs) | [100%](https://github.com/uaktags/NGCSv1#logs) | 
+[Users](https://cloudpanel-api.1and1.com/documentation/v1/#_users) | [100%](https://github.com/uaktags/NGCSv1#users) | 
+[Usages](https://cloudpanel-api.1and1.com/documentation/v1/#_usages) | [0%](https://github.com/uaktags/NGCSv1#usages) | 
+[Server Appliances](https://cloudpanel-api.1and1.com/documentation/v1/#_server_appliances) | [0%](https://github.com/uaktags/NGCSv1#server_appliances) | 
+[DVD ISO](https://cloudpanel-api.1and1.com/documentation/v1/#_dvd_iso) | [0%](https://github.com/uaktags/NGCSv1#dvd_iso) | 
+[Load Balancers](https://cloudpanel-api.1and1.com/documentation/v1/#_load_balancers) | [0%](https://github.com/uaktags/NGCSv1#load_balancer) | 
 
 
 Installation

@@ -123,7 +123,7 @@ class server extends AbstractEntity
                     break;
                 */
                 default:
-                    //$this->{\NGCSv1\convert_to_camel_case($property)} = $value;
+                    $this->{\NGCSv1\convert_to_camel_case($property)} = $value;
             }
         }
 

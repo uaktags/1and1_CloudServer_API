@@ -35,7 +35,7 @@ class SharedStorages extends AbstractApi
     /**
      * @param int $id
      *
-     * @return ImageEntity
+     * @return SharedEntity
      */
     public function getById($id)
     {
@@ -44,6 +44,12 @@ class SharedStorages extends AbstractApi
         return new SharedEntity($image);
     }
 
+    /**
+     * @param $name
+     * @param null $description
+     * @param int $size
+     * @return string
+     */
     public function create($name, $description = Null, $size= 200)
     {
         $data = [
@@ -54,11 +60,22 @@ class SharedStorages extends AbstractApi
         return $this->adapter->post(sprintf('%s/shared_storages', self::ENDPOINT), $data);
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function delete($id)
     {
         return $this->adapter->delete(sprintf('%s/shared_storages/%s', self::ENDPOINT, $id));
     }
 
+    /**
+     * @param $id
+     * @param $name
+     * @param $description
+     * @param $size
+     * @return string
+     */
     public function modify($id, $name, $description, $size)
     {
         if($name!==false)
@@ -70,28 +87,65 @@ class SharedStorages extends AbstractApi
         return $this->adapter->put(sprintf('%s/shared_storages/%s', self::ENDPOINT, $id), $content);
     }
 
+    /**
+     * @param $id
+     * @param $name
+     * @return string
+     */
     public function modifyName($id, $name)
     {
         return $this->modify($id, $name, false, false);
     }
 
+    /**
+     * @param $id
+     * @param $description
+     * @return string
+     */
     public function modifyDescription($id, $description)
     {
         return $this->modify($id, false, $description, false);
     }
 
+    /**
+     * @param $id
+     * @param $size
+     * @return string
+     */
     public function modifySize($id, $size)
     {
         return $this->modify($id, false, false, $size);
     }
 
+    /**
+     * @param $id
+     * @return string
+     */
     public function getServers($id)
     {
         return $this->adapter->get(sprintf('%s/shared_storages/%s/servers', self::ENDPOINT, $id));
     }
 
-    public function attachServer($id, $serverID)
+    /**
+     * @param $id
+     * @param array $servers
+     * @return string
+     */
+    public function attachServer($id, $servers = [])
     {
-        return $this->adapter->post(sprintf('%s/shared_storages/%s/servers?shared_storage_id='.$id, self::ENDPOINT, $id), array('servers'=>array('id'=>$serverID, 'RW')));
+        $data = [
+            'servers' => $servers
+        ];
+        return $this->adapter->post(sprintf('%s/shared_storages/%s/servers', self::ENDPOINT, $id), $data);
+    }
+
+    /**
+     * @param $ssid
+     * @param $sid
+     * @return mixed
+     */
+    public function removeAttachedServer($ssid, $sid)
+    {
+        return $this->adapter->delete(sprintf('%s/shared_storages/%s/servers/%s', self::ENDPOINT, $ssid, $sid));
     }
 }

@@ -12,18 +12,22 @@
 namespace NGCSv1;
 
 use NGCSv1\Adapter\AdapterInterface;
-use NGCSv1\Api\PublicIP;
-use NGCSv1\Api\Image;
-use NGCSv1\Api\Server;
-use NGCSv1\Api\MonitorCenter;
-use NGCSv1\Api\MonitorPolicy;
-use NGCSv1\Api\PrivateNetwork;
-use NGCSv1\Api\Log;
-use NGCSv1\Api\User;
-use NGCSv1\Api\Usage;
-use NGCSv1\Api\Appliance;
-use NGCSv1\Api\FirewallPolicy;
 use NGCSv1\Api\DVD;
+use NGCSv1\Api\FirewallPolicy;
+use NGCSv1\Api\Image;
+use NGCSv1\Api\LoadBalancers;
+use NGCSv1\Api\Logs;
+use NGCSv1\Api\MonitorCenter;
+use NGCSv1\Api\MonitoringPolicy;
+use NGCSv1\Api\PrivateNetwork;
+use NGCSv1\Api\PublicIP;
+use NGCSv1\Api\Server;
+use NGCSv1\Api\ServerAppliances;
+use NGCSv1\Api\SharedStorages;
+use NGCSv1\Api\Usage;
+use NGCSv1\Api\Users;
+
+
 
 /**
  * @author Tim Garrity <timgarrity89@gmail.com>
@@ -48,34 +52,79 @@ class NGCSv1
         $this->adapter = $adapter;
     }
 
-    public function publicip()
+	public function Dvd()
+	{
+		return new DVD($this->adapter);
+	}
+
+	public function FirewallPolicy()
+	{
+		return new FirewallPolicy($this->adapter);
+	}
+
+	public function Image()
+	{
+		return new Image($this->adapter);
+	}
+
+	public function LoadBalancers()
+	{
+		return new LoadBalancers($this->adapter);
+	}
+
+	public function Logs()
+	{
+		return new Logs($this->adapter);
+	}
+
+	public function MonitorCenter()
+	{
+		return new MonitorCenter($this->adapter);
+	}
+
+	public function MonitoringPolicy()
+	{
+		return new MonitoringPolicy($this->adapter);
+	}
+
+	public function PrivateNetwork()
+	{
+		return new PrivateNetwork($this->adapter);
+	}
+
+	public function PublicIP()
 	{
 		return new PublicIP($this->adapter);
 	}
-	
+
 	public function Server()
 	{
 		return new Server($this->adapter);
 	}
-	public function privatenetwork()
+
+	public function ServerAppliances()
 	{
-		return new PublicNetwork($this->adapter);
+		return new ServerAppliances($this->adapter);
 	}
-	public function firewallpolicy()
+
+	public function SharedStorages()
 	{
-		return new FirewallPolicy($this->adapter);
+		return new SharedStorages($this->adapter);
 	}
-	public function monitorpolicy()
+
+	public function Usage()
 	{
-		return new MonitorPolicy($this->adapter);
+		return new Usage($this->adapter);
 	}
-	public function monitorcenter()
+
+	public function Users()
 	{
-		return new MonitorCenter($this->adapter);
+		return new Users($this->adapter);
 	}
-	public function dvd()
+
+	public function Appliances()
 	{
-		return new DVD($this->adapter);
+		return $this->ServerAppliances();
 	}
-	
+
 }

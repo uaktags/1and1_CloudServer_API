@@ -11,27 +11,24 @@
 
 namespace NGCSv1\Api;
 
-use NGCSv1\Entity\Action as ActionEntity;
-use NGCSv1\Entity\Server as serverEntity;
-use NGCSv1\Entity\Image as ImageEntity;
-use NGCSv1\Entity\Kernel as KernelEntity;
-use NGCSv1\Entity\Upgrade as UpgradeEntity;
+use NGCSv1\Entity\PrivateNetwork as pNetworkEntity;
+
 
 /**
  * @author Tim Garrity <timgarrity89@gmail.com>
  */
-class Server extends AbstractApi
+class PrivateNetwork extends AbstractApi
 {
     /**
-     * @return serverEntity[]
+     * @return pNetworkEntity[]
      */
     public function getAll()
     {
-        $servers = $this->adapter->get(sprintf('%s/private_networks', self::ENDPOINT));
+        $privatenetworks = $this->adapter->get(sprintf('%s/private_networks', self::ENDPOINT));
 
-        return array_map(function ($server) {
-            return new serverEntity($server);
-        }, $servers['body']);
+        return array_map(function ($privatenetwork) {
+            return new pNetworkEntity($privatenetwork);
+        }, $privatenetworks);
     }
 
     /**
@@ -39,13 +36,57 @@ class Server extends AbstractApi
      *
      * @throws \RuntimeException
      *
-     * @return serverEntity
+     * @return pNetworkEntity
      */
     public function getById($id)
     {
-        $server = $this->adapter->get(sprintf('%s/private_networks/%s', self::ENDPOINT, $id));
-        return new serverEntity($server['body']);
+        $privatenetwork = $this->adapter->get(sprintf('%s/private_networks/%s', self::ENDPOINT, $id));
+        return new pNetworkEntity($privatenetwork);
     }
 
+    /**
+     * @param $id
+     * @return server
+     *
+     * @desc "Returns a list of the servers attached to a private network."
+     */
+    public function getServersByNetworkId($id)
+    {
+        $servers = $this->adapter->get(sprintf('%s/private_networks/%s/servers', self::ENDPOINT, $id));
+        return new server($servers);
+    }
+
+    /**
+     * @param $sid
+     * @param $netid
+     * @return server
+     *
+     * @desc "Returns information about a server attached to a private network."
+     */
+    public function getServerByIdByNetworkId($sid, $netid)
+    {
+        $server = $this->adapter->get(sprintf('%s/private_networks/%s/servers/%s', self::ENDPOINT, $netid, $sid));
+        return new server($server);
+    }
+
+    public function create($name, $desc = '')
+    {
+        $data = [
+            'name'=> $name,
+            'description' => $desc
+        ];
+
+        return $this->adapter->post(sprintf('%s/private_networks', self::ENDPOINT), $data);
+    }
+
+    public function delete($id)
+    {
+        return $this->adapter->delete(sprintf('%s/private_networks/%s', self::ENDPOINT, $id));
+    }
+
+    public function deleteServerFromNetwork($sid, $netid)
+    {
+        return $this->adapter->delete(sprintf('%s/private_networks/%s/servers/%s', self::ENDPOINT, $netid, $sid));
+    }
 
 }

@@ -19,7 +19,7 @@ use NGCSv1\Entity\PublicIP as PublicIPEntity;
 class PublicIP extends AbstractApi
 {
     /**
-     * @return serverEntity[]
+     * @return array
      */
     public function getAll()
     {
@@ -31,16 +31,13 @@ class PublicIP extends AbstractApi
     }
 
     /**
-     * @param int $id
-     *
-     * @throws \RuntimeException
-     *
-     * @return serverEntity
+     * @param $id
+     * @return PublicIPEntity
      */
     public function getById($id)
     {
         $ip = $this->adapter->get(sprintf('%s/public_ips/%s', self::ENDPOINT, $id));
-        return new serverEntity($ip);
+        return new PublicIPEntity($ip);
     }
 
 

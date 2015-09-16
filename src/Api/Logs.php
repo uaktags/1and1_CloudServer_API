@@ -19,15 +19,15 @@ use NGCSv1\Entity\Log as LogEntity;
 class Logs extends AbstractApi
 {
     /**
-     * @return serverEntity[]
+     * @return logEntity[]
      */
     public function getAll()
     {
-        $servers = $this->adapter->get(sprintf('%s/logs', self::ENDPOINT));
+        $logs = $this->adapter->get(sprintf('%s/logs', self::ENDPOINT));
 
-        return array_map(function ($server) {
-            return new LogEntity($server);
-        }, $servers);
+        return array_map(function ($log) {
+            return new LogEntity($log);
+        }, $logs);
     }
 
     /**
@@ -35,11 +35,11 @@ class Logs extends AbstractApi
      *
      * @throws \RuntimeException
      *
-     * @return serverEntity
+     * @return logEntity
      */
     public function getById($id)
     {
-        $server = $this->adapter->get(sprintf('%s/logs/%s', self::ENDPOINT, $id));
-        return new LogEntity($server);
+        $log = $this->adapter->get(sprintf('%s/logs/%s', self::ENDPOINT, $id));
+        return new LogEntity($log);
     }
 }

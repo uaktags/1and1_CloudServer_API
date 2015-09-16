@@ -18,15 +18,15 @@ class Appliance extends AbstractEntity
 {
 	public $id;
 	public $name;
-	public $os_family;
+	public $osFamily;
 	public $os;
-	public $os_version;
-	public $architecure;
-	public $os_image_type;
+	public $osVersion;
+	public $architecture;
+	public $osImageType;
 	public $type;
-	public $min_hdd_size;
+	public $minHddSize;
 	public $licenses;
-	public $automatic_installation = true;
+	public $automaticInstallation = true;
     /**
      * @param \stdClass|array $parameters
      */

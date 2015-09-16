@@ -16,17 +16,19 @@ use NGCSv1\Entity\Usage as UsageEntity;
 /**
  * @author Tim Garrity <timgarrity89@gmail.com>
  */
-class DVD extends AbstractApi
+class Usage extends AbstractApi
 {
     /**
-     * @return serverEntity[]
+     * @return usageEntity[]
      */
     public function getAll()
     {
         $usage = $this->adapter->get(sprintf('%s/usages', self::ENDPOINT));
 
-        return array_map(function ($server) {
-            return new UsageEntity($server);
+        return array_map(function ($usage) {
+            return new UsageEntity($usage);
         }, $usage);
     }
+
+    
 }

@@ -87,8 +87,8 @@ class Server extends AbstractApi
             $data['monitoring_policy_id']=$monitor;
 
         $content = json_encode($data);
-
-        $server = $this->adapter->post(sprintf('%s/servers', self::ENDPOINT), $headers, $content);
+        $server = $this->adapter->post(sprintf('%s/servers', self::ENDPOINT),  $content);
+        die(var_dump($server));
         $server = json_decode($server);
 
         return new serverEntity($server->server);
@@ -104,6 +104,10 @@ class Server extends AbstractApi
         $this->adapter->delete(sprintf('%s/servers/%s', self::ENDPOINT, $id));
     }
 
+    /**
+     * @param $id
+     * @param $name
+     */
     public function renameServer($id, $name)
     {
         $content = array(
@@ -112,6 +116,10 @@ class Server extends AbstractApi
         $this->adapter->put(sprintf('%s/servers/%s?server_id={$id}', self::ENDPOINT, $id), $content);
     }
 
+    /**
+     * @param $id
+     * @param $description
+     */
     public function setDescription($id, $description)
     {
         $content = array(
@@ -120,58 +128,101 @@ class Server extends AbstractApi
         $this->adapter->put(sprintf('%s/servers/%s?server_id={$id}', self::ENDPOINT, $id), $content);
     }
 
+    /**
+     * @param $id
+     * @return HardwareEntity
+     */
     public function getHardware($id)
     {
         $server = $this->adapter->get(sprintf('%s/servers/%s/hardware', self::ENDPOINT, $id));
         return new HardwareEntity($server);
     }
 
+    /**
+     * @param $id
+     * @return ServerEntity
+     */
     public function getStatus($id)
     {
         $server = $this->adapter->get(sprintf('%s/servers/%s/status', self::ENDPOINT, $id));
         return new serverEntity($server);
     }
 
+    /**
+     * @param $id
+     * @return ServerEntity
+     */
     public function getDVD($id)
     {
         $server = $this->adapter->get(sprintf('%s/servers/%s/dvd', self::ENDPOINT, $id));
         return new serverEntity($server);
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function unloadDVD($id)
     {
         return $this->adapter->delete(sprintf('%s/servers/%s/dvd', self::ENDPOINT, $id));
     }
 
+    /**
+     * @param $id
+     * @param $dvdid
+     * @return string
+     */
     public function loadDVD($id, $dvdid)
     {
         return $this->adapter->put(sprintf('%s/servers/%s/dvd?server_id={$id}', self::ENDPOINT, $id), array('id' => $dvdid));
     }
 
+    /**
+     * @param $id
+     * @return ServerEntity
+     */
     public function getNetworks($id)
     {
         $server = $this->adapter->get(sprintf('%s/servers/%s/private_networks', self::ENDPOINT, $id));
         return new serverEntity($server);
     }
 
+    /**
+     * @param $id
+     * @param $networkID
+     * @return ServerEntity
+     */
     public function addNetworkToServer($id, $networkID)
     {
         $server = $this->adapter->post(sprintf('%s/servers/%s/private_networks', self::ENDPOINT, $id), array('id' => $networkID));
         return new serverEntity($server);
     }
 
+    /**
+     * @param $id
+     * @return ServerEntity
+     */
     public function getSnapshots($id)
     {
         $server = $this->adapter->get(sprintf('%s/servers/%s/snapshots', self::ENDPOINT, $id));
         return new serverEntity($server);
     }
 
+    /**
+     * @param $id
+     * @param $networkID
+     * @return PrivateNetworkEntity
+     */
     public function getNetworkByID($id, $networkID)
     {
         $server = $this->adapter->get(sprintf('%s/servers/%s/private_networks/%s', self::ENDPOINT, $id, $networkID));
         return new PrivateNetworkEntity($server);
     }
 
+    /**
+     * @param $id
+     * @return string
+     */
     public function cloneServer($id)
     {
         $content = array(
