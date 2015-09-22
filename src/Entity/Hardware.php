@@ -45,6 +45,7 @@ class Hardware extends AbstractEntity
                     $this->ram = $value;
                     break;
                 case 'hdds':
+                    $this->hdds = $value;
                     break;
 
                 default:

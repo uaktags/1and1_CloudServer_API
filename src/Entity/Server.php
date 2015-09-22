@@ -63,7 +63,7 @@ class server extends AbstractEntity
     /**
      * @var string
      */
-    public $dvd;
+    public $dvd = 'Not Loaded';
 
     /**
      * @var object
@@ -98,6 +98,14 @@ class server extends AbstractEntity
                     if (is_object($value)) {
                         $this->hardware = new Hardware($value);
                     }
+                    break;
+
+                case 'dvd':
+                    $this->dvd = new DVD($value);
+                    break;
+
+                case 'first_password':
+                    $this->first_password = $value;
                     break;
 /*
                 case 'size':
