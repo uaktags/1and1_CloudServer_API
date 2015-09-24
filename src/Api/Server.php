@@ -22,12 +22,27 @@ use NGCSv1\Entity\Hardware as HardwareEntity;
 class Server extends AbstractApi
 {
     /**
-     * @return serverEntity[]
+     * @param bool|false $detail //Warning this could create a lot of requests.
+     * @return array
      */
-    public function getAll()
+    public function getAll($detail = false)
     {
         $servers = $this->adapter->get(sprintf('%s/servers', self::ENDPOINT));
 
+        if($detail)
+        {
+            $int = 0;
+            foreach($servers as $k)
+            {
+                $server = $this->getById($k->id);
+                foreach($server as $sk=>$sv)
+                {
+                    if(!isset($servers[$int]->$sk))
+                        $servers[$int]->$sk = $sv;
+                }
+                $int++;
+            }
+        }
         return array_map(function ($server) {
             return new serverEntity($server);
         }, $servers);

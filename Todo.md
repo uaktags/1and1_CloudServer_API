@@ -7,3 +7,4 @@ NGCS v1 API TODO
 | Port Buzz Library | 0% |
 | Create a bridge example with MySQL support for clients to utilize 1 1&1 Customer Account, but only have access via the API | 0% |
 | Create a bridge example for basic Ajax integration | 0% |
+| Create a CURL Adapter for those who don't want to use Composer or other libraries | 0% |

@@ -10,6 +10,7 @@
  */
 
 namespace NGCSv1\Entity;
+use NGCSv1\Api\MonitoringPolicy;
 
 /**
  * @author Tim Garrity <timgarrity89@gmail.com>
@@ -24,7 +25,7 @@ class server extends AbstractEntity
     /**
      * @var string
      */
-    public $cloudpanel_id;
+    public $cloudpanelId;
 
     /**
      * @var string
@@ -34,7 +35,7 @@ class server extends AbstractEntity
     /**
      * @var date
      */
-    public $creation_date;
+    public $creationDate;
 
     /**
      * @var string
@@ -75,6 +76,25 @@ class server extends AbstractEntity
      */
     public $name;
 
+    /**
+     * @var string
+     */
+    public $snapshot;
+
+    /**
+     * @var array
+     */
+    public $alerts = [];
+
+    /**
+     * @var
+     */
+    public $monitoringPolicy;
+
+    /**
+     * @var
+     */
+    public $privateNetworks;
 
 
     /**
@@ -101,12 +121,19 @@ class server extends AbstractEntity
                     break;
 
                 case 'dvd':
-                    $this->dvd = new DVD($value);
+                    $this->dvd = $value;
                     break;
 
                 case 'first_password':
                     $this->first_password = $value;
                     break;
+
+                case 'privateNetworks':
+                    $this->privateNetworks = $value;
+                    break;
+
+                case 'monitoringPolicy':
+                    $this->monitoringPolicy = $value;
 /*
                 case 'size':
                     if (is_object($value)) {
