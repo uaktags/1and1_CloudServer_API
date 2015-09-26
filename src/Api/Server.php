@@ -245,4 +245,13 @@ class Server extends AbstractApi
         );
         return $this->adapter->post(sprintf('%s/servers/%s/clone', self::ENDPOINT, $id), $content);
     }
+
+    public function getFixedInstances()
+    {
+        $instances = $this->adapter->get(sprintf('%s/servers/fixed_instance_sizes', self::ENDPOINT));
+
+        return array_map(function ($instance) {
+            return new HardwareEntity($instance);
+        }, $instances);
+    }
 }

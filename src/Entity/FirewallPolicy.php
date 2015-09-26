@@ -16,6 +16,15 @@ namespace NGCSv1\Entity;
  */
 class FirewallPolicy extends AbstractEntity
 {
+    public $id;
+    public $name;
+    public $description;
+    public $state;
+    public $creation_date;
+    public $default;
+    public $rules;
+    public $server_ips;
+    public $cloudpanel_id;
     /**
      * @param \stdClass|array $parameters
      */
