@@ -11,9 +11,14 @@
 
 namespace NGCSv1\Api;
 
+use NGCSv1\Entity\FirewallPolicy;
+use NGCSv1\Entity\Harddrive;
+use NGCSv1\Entity\LoadBalancer;
 use NGCSv1\Entity\PrivateNetwork as PrivateNetworkEntity;
+use NGCSv1\Entity\PublicIP;
 use NGCSv1\Entity\Server as ServerEntity;
 use NGCSv1\Entity\Hardware as HardwareEntity;
+use NGCSv1\Entity\Snapshots;
 
 
 /**
@@ -143,6 +148,11 @@ class Server extends AbstractApi
         $this->adapter->put(sprintf('%s/servers/%s?server_id={$id}', self::ENDPOINT, $id), $content);
     }
 
+
+    public function modifyServer($id, $name, $desc)
+    {
+
+    }
     /**
      * @param $id
      * @return HardwareEntity
@@ -246,6 +256,10 @@ class Server extends AbstractApi
         return $this->adapter->post(sprintf('%s/servers/%s/clone', self::ENDPOINT, $id), $content);
     }
 
+    /**
+     * @return array
+     *
+     */
     public function getFixedInstances()
     {
         $instances = $this->adapter->get(sprintf('%s/servers/fixed_instance_sizes', self::ENDPOINT));
@@ -253,5 +267,236 @@ class Server extends AbstractApi
         return array_map(function ($instance) {
             return new HardwareEntity($instance);
         }, $instances);
+    }
+
+    /**
+     *
+     *
+     */
+    public function getHarddrives($id)
+    {
+        $hdds = $this->adapter->get(sprintf('%s/servers/%s/hardware/hdds/%s', self::ENDPOINT, $id));
+
+        return array_map(function ($hdd) {
+            return new Harddrive($hdd);
+        }, $hdds);
+    }
+
+    /**
+     *
+     *
+     */
+    public function getHarddrive($id, $hdd)
+    {
+        $hdds = $this->adapter->get(sprintf('%s/servers/%s/hardware/hdds/%s', self::ENDPOINT, $id, $hdd));
+
+        return new Harddrive($hdds);
+    }
+
+    /**
+     *
+     *
+     */
+    public function getServerImage($id)
+    {
+        $image = $this->adapter->get(sprintf('%s/servers/image', self::ENDPOINT));
+
+        return new $image;
+    }
+
+    /**
+     *
+     *
+     */
+    public function getServerIPs($id)
+    {
+        $ips = $this->adapter->get(sprintf('%s/servers/%s/ips', self::ENDPOINT, $id));
+
+        return array_map(function ($ip) {
+            return new PublicIP($ip);
+        }, $ips);
+    }
+
+    /**
+     *
+     *
+     */
+    public function getServerIP($id, $ip)
+    {
+        $ips = $this->adapter->get(sprintf('%s/servers/%s/ips/%s', self::ENDPOINT, $id, $ip));
+
+        return array_map(function ($ipid) {
+            return new PublicIP($ipid);
+        }, $ips);
+    }
+
+    /**
+     *
+     *
+     */
+    public function getFirewallForIP($id, $ip)
+    {
+        $firewalls = $this->adapter->get(sprintf('%s/servers/%s/ips/%s/firewall_policy', self::ENDPOINT, $id, $ip));
+
+        return array_map(function ($firewall) {
+            return new FirewallPolicy($firewall);
+        }, $firewalls);
+    }
+
+    /**
+     *
+     *
+     */
+    public function getLoadBalancerForIP($id, $ip)
+    {
+        $balancers = $this->adapter->get(sprintf('%s/servers/%s/ips/%s/load_balancers', self::ENDPOINT, $id, $ip));
+
+        return array_map(function ($balancer) {
+            return new LoadBalancer($balancer);
+        }, $balancers);
+    }
+
+    /**
+     *
+     *
+     */
+    public function getServerSnapshots($id)
+    {
+        $snaps = $this->adapter->get(sprintf('%s/servers/%s/snapshots', self::ENDPOINT, $id));
+
+        return array_map(function ($snap) {
+            return new Snapshots($snap);
+        }, $snaps);
+    }
+
+    /**
+     *
+     *
+     */
+    public function deleteHarddrive($id, $hdd)
+    {
+        $this->adapter->delete(sprintf('%s/servers/%s/hardware/hdds/%s', self::ENDPOINT, $id, $hdd));
+
+        return $this->getByID($id);
+    }
+
+    /**
+     *
+     *
+     */
+    public function deleteIPfromServer($id, $ip, $keep = false)
+    {
+        $this->adapter->delete(sprintf('%s/servers/%s/ips/%s', self::ENDPOINT, $id, $ip), array('keep' => $keep));
+
+        return $this->getByID($id);
+    }
+
+    /**
+     *
+     *
+     */
+    public function deleteLoadBalancer($id, $ip, $load)
+    {
+        $a = $this->adapter->get(sprintf('%s/servers/', self::ENDPOINT));
+    }
+
+    /**
+     *
+     *
+     */
+    public function removeServerFromNetwork($id, $priv)
+    {
+        $a = $this->adapter->get(sprintf('%s/servers/', self::ENDPOINT));
+    }
+
+    /**
+     *
+     *
+     */
+    public function deleteSnapshot($id, $snap)
+    {
+        $a = $this->adapter->get(sprintf('%s/servers/', self::ENDPOINT));
+    }
+
+    /**
+     *
+     *
+     */
+    public function addNewHarddrive($id, $size, $main = false)
+    {
+        $a = $this->adapter->get(sprintf('%s/servers/', self::ENDPOINT));
+    }
+
+    /**
+     *
+     *
+     */
+    public function addNewIP($id, $v4 = true)
+    {
+        $a = $this->adapter->get(sprintf('%s/servers/', self::ENDPOINT));
+    }
+
+    /**
+     *
+     *
+     */
+    public function createSnapshot($id)
+    {
+        $a = $this->adapter->get(sprintf('%s/servers/', self::ENDPOINT));
+    }
+
+    /**
+     *
+     *
+     */
+    public function modifyHardware($id, $fixed = '', $vcore = '', $coreper = '', $ram = '')
+    {
+        $a = $this->adapter->get(sprintf('%s/servers/', self::ENDPOINT));
+    }
+
+    /**
+     *
+     *
+     */
+    public function modifyHarddrive($id, $hdd, $size)
+    {
+        $a = $this->adapter->get(sprintf('%s/servers/', self::ENDPOINT));
+    }
+
+    /**
+     *
+     *
+     */
+    public function reinstallImage($id, $image, $password = '', $firewall)
+    {
+
+    }
+
+    /**
+     *
+     *
+     */
+    public function addFirewallToIP($id, $ip, $firewall)
+    {
+
+    }
+
+    /**
+     *
+     *
+     */
+    public function powerOffServer($id, $action, $method)
+    {
+        //$action = POWER_ON, POWER_OFF, REBOOT
+        //$method = "SOFTWARE, HARDWARE
+    }
+
+    /**
+     *
+     *
+     */
+    public function restoreSnapshot($id, $snapshot)
+    {
+
     }
 }

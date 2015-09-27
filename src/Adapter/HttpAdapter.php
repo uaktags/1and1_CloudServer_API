@@ -63,12 +63,13 @@ class HttpAdapter extends AbstractAdapter implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function delete($url, $headers = array())
+    public function delete($url, $content = '')
     {
-        $response = Request::delete($url)
+        $response = Request::delete()
             ->addHeader("Accept", "application/json")
             ->addHeader('Content-type', "application/json")
             ->addHeader("X-TOKEN", $this->api)
+            ->body($content)
             ->send();
 
         if($this->isResponseOk($response->code))
@@ -80,7 +81,7 @@ class HttpAdapter extends AbstractAdapter implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function put($url, $headers = array(), $content = '')
+    public function put($url, $content = '')
     {
         $response = Request::put($url)
             ->addHeader("Accept", "application,json")

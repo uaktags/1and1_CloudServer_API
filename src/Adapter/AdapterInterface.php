@@ -27,11 +27,11 @@ interface AdapterInterface
 
     /**
      * @param string $url
-     * @param array  $headers (optional)
+     * @param array $content (optional)
      *
      * @throws \RuntimeException|ExceptionInterface
      */
-    public function delete($url);
+    public function delete($url, $content = '');
 
     /**
      * @param string $url
