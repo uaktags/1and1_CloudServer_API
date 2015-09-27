@@ -397,7 +397,9 @@ class Server extends AbstractApi
      */
     public function deleteLoadBalancer($id, $ip, $load)
     {
-        $a = $this->adapter->get(sprintf('%s/servers/', self::ENDPOINT));
+        $this->adapter->delete(sprintf('%s/servers/%s/ips/%s/load_balancers/%s', self::ENDPOINT, $id, $ip, $load));
+
+        return $this->getById($id);
     }
 
     /**
@@ -406,7 +408,9 @@ class Server extends AbstractApi
      */
     public function removeServerFromNetwork($id, $priv)
     {
-        $a = $this->adapter->get(sprintf('%s/servers/', self::ENDPOINT));
+        $this->adapter->delete(sprintf('%s/servers/%s/private_networks/%s', self::ENDPOINT, $id, $priv));
+
+        return $this->getById($id);
     }
 
     /**
@@ -415,7 +419,9 @@ class Server extends AbstractApi
      */
     public function deleteSnapshot($id, $snap)
     {
-        $a = $this->adapter->get(sprintf('%s/servers/', self::ENDPOINT));
+        $this->adapter->delete(sprintf('%s/servers/', self::ENDPOINT));
+
+        return $this->getById($id);
     }
 
     /**
