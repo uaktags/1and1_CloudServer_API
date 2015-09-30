@@ -11,7 +11,6 @@
 
 namespace NGCSv1\Api;
 
-use NGCSv1\Entity\Action as ActionEntity;
 use NGCSv1\Entity\Image as ImageEntity;
 
 /**
@@ -20,8 +19,6 @@ use NGCSv1\Entity\Image as ImageEntity;
 class Image extends AbstractApi
 {
     /**
-     * @param array $criteria
-     *
      * @return ImageEntity[]
      */
     public function getAll()
@@ -70,5 +67,21 @@ class Image extends AbstractApi
     public function modifyDescription($id, $description)
     {
         return $this->adapter->put(sprintf('%s/images/%s', self::ENDPOINT, $id), array('description'=>$description));
+    }
+
+    public function modify($id, $name=false, $desc=false, $freq=false)
+    {
+        $body =[];
+        if($freq)
+            $body['frequency'] = 'ONCE';
+        if($name !== false)
+            $body['name'] = $name;
+        if($desc !== false)
+            $body['description'] = $desc;
+
+        return $this->adapter->put(sprintf('%s/images/%s', self::ENDPOINT, $id), $body);
+
+
+
     }
 }

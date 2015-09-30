@@ -6,12 +6,12 @@ A PHP5.4 wrapper for 1&1's New CloudServer API. Based off of DigitalOceanV2 by t
 Status
 ------
 
-API | Documentation |
---- | ------------- |
-[Servers](https://cloudpanel-api.1and1.com/documentation/v1/#_servers) | [30%](https://github.com/uaktags/NGCSv1#servers) | 
-[Images](https://cloudpanel-api.1and1.com/documentation/v1/#_images) | [0%](https://github.com/uaktags/NGCSv1#images) | 
-[Shared Storages](https://cloudpanel-api.1and1.com/documentation/v1/#_shared_storages) | [0%](https://github.com/uaktags/NGCSv1#shared_storages) | 
-[Firewall Policies](https://cloudpanel-api.1and1.com/documentation/v1/#_firewall_policies) | [0%](https://github.com/uaktags/NGCSv1#firewall_policies) | 
+API | Documentation | Status |
+--- | ------------- | ------ |
+[Servers](https://cloudpanel-api.1and1.com/documentation/v1/#_servers) | (https://github.com/uaktags/NGCSv1#servers) | [100%] |
+[Images](https://cloudpanel-api.1and1.com/documentation/v1/#_images) | (https://github.com/uaktags/NGCSv1#images) | [100%]
+[Shared Storages](https://cloudpanel-api.1and1.com/documentation/v1/#_shared_storages) | (https://github.com/uaktags/NGCSv1#shared_storages) | [100%] |
+[Firewall Policies](https://cloudpanel-api.1and1.com/documentation/v1/#_firewall_policies) | (https://github.com/uaktags/NGCSv1#firewall_policies) | [100%] |
 [PublicIPs](https://cloudpanel-api.1and1.com/documentation/v1/#_public_ips) | [0%](https://github.com/uaktags/NGCSv1#public_ips) | 
 [Private Networks](https://cloudpanel-api.1and1.com/documentation/v1/#_private_networks) | [0%](https://github.com/uaktags/NGCSv1#private_networks) | 
 [Monitoring Center](https://cloudpanel-api.1and1.com/documentation/v1/#_monitoring_center) | [0%](https://github.com/uaktags/NGCSv1#monitoring_center) | 

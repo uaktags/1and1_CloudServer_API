@@ -89,4 +89,19 @@ class PrivateNetwork extends AbstractApi
         return $this->adapter->delete(sprintf('%s/private_networks/%s/servers/%s', self::ENDPOINT, $netid, $sid));
     }
 
+    public function modify($id, $name=false, $desc=false, $network=false,$subnet=false)
+    {
+        $body=[];
+        if($name!==false)
+            $body['name']=$name;
+        if($desc!==false)
+            $body['description']=$desc;
+        if($network!==false)
+            $body['network_address']=$network;
+        if($subnet!==false)
+            $body['subnet_mask']=$subnet;
+
+        return $this->adapter->put(sprintf('%s/private_networks/%s', self::ENDPOINT, $id), $body);
+    }
+
 }

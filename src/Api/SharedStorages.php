@@ -12,6 +12,7 @@
 namespace NGCSv1\Api;
 
 use NGCSv1\Entity\SharedStorage as SharedEntity;
+use NGCSv1\Entity\Server as ServerEntity;
 
 /**
  * @author Tim Garrity <timgarrity89@gmail.com>
@@ -19,8 +20,6 @@ use NGCSv1\Entity\SharedStorage as SharedEntity;
 class SharedStorages extends AbstractApi
 {
     /**
-     * @param array $criteria
-     *
      * @return SharedEntity[]
      */
     public function getAll()
@@ -78,6 +77,7 @@ class SharedStorages extends AbstractApi
      */
     public function modify($id, $name, $description, $size)
     {
+        $content=[];
         if($name!==false)
             $content['name'] = $name;
         if($description!==false)
@@ -147,5 +147,36 @@ class SharedStorages extends AbstractApi
     public function removeAttachedServer($ssid, $sid)
     {
         return $this->adapter->delete(sprintf('%s/shared_storages/%s/servers/%s', self::ENDPOINT, $ssid, $sid));
+    }
+
+    /**
+     * @param $id
+     * @param $sid
+     * @return array
+     */
+    public function getAttachedServerByID($id, $sid)
+    {
+        $servers = $this->adapter->get(sprintf('%s/shared_storages/%s/servers/%s', self::ENDPOINT, $id, $sid));
+
+        return array_map(function ($server) {
+            return new ServerEntity($server);
+        }, $servers);
+    }
+
+    /**
+     * @return string
+     */
+    public function getCredentials()
+    {
+        return $this->adapter->get(sprintf('%s/shared_storages/access', self::ENDPOINT));
+    }
+
+    /**
+     * @param $password
+     * @return string
+     */
+    public function changePassword($password)
+    {
+        return $this->adapter->put(sprintf('%s/shared_storages/access', self::ENDPOINT), ['password'=>$password]);
     }
 }

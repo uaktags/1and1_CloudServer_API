@@ -15,7 +15,7 @@ use NGCSv1\Api\MonitoringPolicy;
 /**
  * @author Tim Garrity <timgarrity89@gmail.com>
  */
-class server extends AbstractEntity
+class Server extends AbstractEntity
 {
     /**
      * @var int
