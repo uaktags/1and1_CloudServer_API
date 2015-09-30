@@ -12,7 +12,7 @@ API | Documentation | Status |
 [Images](https://cloudpanel-api.1and1.com/documentation/v1/#_images) | (https://github.com/uaktags/NGCSv1#images) | [100%]
 [Shared Storages](https://cloudpanel-api.1and1.com/documentation/v1/#_shared_storages) | (https://github.com/uaktags/NGCSv1#shared_storages) | [100%] |
 [Firewall Policies](https://cloudpanel-api.1and1.com/documentation/v1/#_firewall_policies) | (https://github.com/uaktags/NGCSv1#firewall_policies) | [100%] |
-[PublicIPs](https://cloudpanel-api.1and1.com/documentation/v1/#_public_ips) | [0%](https://github.com/uaktags/NGCSv1#public_ips) | 
+[PublicIPs](https://cloudpanel-api.1and1.com/documentation/v1/#_public_ips) | (https://github.com/uaktags/NGCSv1#public_ips) | [100%] |
 [Private Networks](https://cloudpanel-api.1and1.com/documentation/v1/#_private_networks) | [0%](https://github.com/uaktags/NGCSv1#private_networks) | 
 [Monitoring Center](https://cloudpanel-api.1and1.com/documentation/v1/#_monitoring_center) | [0%](https://github.com/uaktags/NGCSv1#monitoring_center) | 
 [Monitoring Policies](https://cloudpanel-api.1and1.com/documentation/v1/#_monitoring_policies) | [0%](https://github.com/uaktags/NGCSv1#monitoring_policies) | 
