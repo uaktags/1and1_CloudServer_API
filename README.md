@@ -13,9 +13,9 @@ API | Documentation | Status |
 [Shared Storages](https://cloudpanel-api.1and1.com/documentation/v1/#_shared_storages) | (https://github.com/uaktags/NGCSv1#shared_storages) | [100%] |
 [Firewall Policies](https://cloudpanel-api.1and1.com/documentation/v1/#_firewall_policies) | (https://github.com/uaktags/NGCSv1#firewall_policies) | [100%] |
 [PublicIPs](https://cloudpanel-api.1and1.com/documentation/v1/#_public_ips) | (https://github.com/uaktags/NGCSv1#public_ips) | [100%] |
-[Private Networks](https://cloudpanel-api.1and1.com/documentation/v1/#_private_networks) | [0%](https://github.com/uaktags/NGCSv1#private_networks) | 
-[Monitoring Center](https://cloudpanel-api.1and1.com/documentation/v1/#_monitoring_center) | [0%](https://github.com/uaktags/NGCSv1#monitoring_center) | 
-[Monitoring Policies](https://cloudpanel-api.1and1.com/documentation/v1/#_monitoring_policies) | [0%](https://github.com/uaktags/NGCSv1#monitoring_policies) | 
+[Private Networks](https://cloudpanel-api.1and1.com/documentation/v1/#_private_networks) | (https://github.com/uaktags/NGCSv1#private_networks) | [90%]
+[Monitoring Center](https://cloudpanel-api.1and1.com/documentation/v1/#_monitoring_center) | (https://github.com/uaktags/NGCSv1#monitoring_center) | [100%] 
+[Monitoring Policies](https://cloudpanel-api.1and1.com/documentation/v1/#_monitoring_policies) | [50%](https://github.com/uaktags/NGCSv1#monitoring_policies) | 
 [Logs](https://cloudpanel-api.1and1.com/documentation/v1/#_logs) | [100%](https://github.com/uaktags/NGCSv1#logs) | 
 [Users](https://cloudpanel-api.1and1.com/documentation/v1/#_users) | [100%](https://github.com/uaktags/NGCSv1#users) | 
 [Usages](https://cloudpanel-api.1and1.com/documentation/v1/#_usages) | [0%](https://github.com/uaktags/NGCSv1#usages) | 

@@ -104,4 +104,9 @@ class PrivateNetwork extends AbstractApi
         return $this->adapter->put(sprintf('%s/private_networks/%s', self::ENDPOINT, $id), $body);
     }
 
+    public function addServerToNetwork($id, $sid)
+    {
+        return $this->adapter->post(sprintf('%s/private_networks/%s/servers', self::ENDPOINT, $id), $sid);
+    }
+
 }
