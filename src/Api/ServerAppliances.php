@@ -19,7 +19,7 @@ use NGCSv1\Entity\Appliance as ApplianceEntity;
 class ServerAppliances extends AbstractApi
 {
     /**
-     * @return serverEntity[]
+     * @return applicanceEntity[]
      */
     public function getAll()
     {
@@ -35,7 +35,7 @@ class ServerAppliances extends AbstractApi
      *
      * @throws \RuntimeException
      *
-     * @return serverEntity
+     * @return applicanceEntity
      */
     public function getById($id)
     {

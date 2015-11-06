@@ -24,6 +24,9 @@ class Hardware extends AbstractEntity
     public $cores_per_processor;
     public $ram;
     public $hdds;
+    public $id;
+    public $name;
+
 
     /**
      * @param \stdClass|array $parameters

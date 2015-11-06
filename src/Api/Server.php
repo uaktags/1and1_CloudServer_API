@@ -105,13 +105,10 @@ class Server extends AbstractApi
 
         if($monitor!=0)
             $data['monitoring_policy_id']=$monitor;
-
         $content = json_encode($data);
-        $server = $this->adapter->post(sprintf('%s/servers', self::ENDPOINT),  $content);
-        die(var_dump($server));
-        $server = json_decode($server);
-
-        return new serverEntity($server->server);
+        return $this->adapter->post(sprintf('%s/servers', self::ENDPOINT),  $content);
+        //$server = json_decode($server);
+        //return new serverEntity($server['body']);
     }
 
     /**
@@ -133,7 +130,7 @@ class Server extends AbstractApi
         $content = array(
             'name' => $name
         );
-        $this->adapter->put(sprintf('%s/servers/%s?server_id={$id}', self::ENDPOINT, $id), $content);
+        return $this->adapter->put(sprintf('%s/servers/%s?server_id={$id}', self::ENDPOINT, $id), $content);
     }
 
     /**
@@ -491,7 +488,7 @@ class Server extends AbstractApi
      *
      *
      */
-    public function powerOffServer($id, $action, $method)
+    public function powerOffServer($id, $action = 'POWER_OFF', $method='HARDWARE')
     {
         //$action = POWER_ON, POWER_OFF, REBOOT
         //$method = "SOFTWARE, HARDWARE
