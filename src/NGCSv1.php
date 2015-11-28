@@ -26,6 +26,7 @@ use NGCSv1\Api\ServerAppliances;
 use NGCSv1\Api\SharedStorages;
 use NGCSv1\Api\Usage;
 use NGCSv1\Api\Users;
+use NGCSv1\Api\Roles;
 
 
 
@@ -125,6 +126,11 @@ class NGCSv1
 	public function Appliances()
 	{
 		return $this->ServerAppliances();
+    }
+
+    public function Roles()
+    {
+        return new Roles($this->adapter);
 	}
 
 }

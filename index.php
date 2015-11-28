@@ -11,3 +11,5 @@ $adapter = new HttpAdapter('0d5f7035afb9aadc0e19a94b46b9a5b9');
 
 // create a ngcs object with the previous adapter
 $ngcs = new NGCSv1($adapter);
+
+var_dump($ngcs->Roles()->getAll());
