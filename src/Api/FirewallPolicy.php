@@ -22,15 +22,33 @@ class FirewallPolicy extends AbstractApi
      * GET Functions
      */
     /**
-     * @return serverEntity[]
+     * @return FirewallEntity[]
      */
-    public function getAll()
+    public function getAll($opts=array())
     {
-        $servers = $this->adapter->get(sprintf('%s/firewall_policies', self::ENDPOINT));
+        $query = array();
+        if(array_key_exists('perpage', $opts))
+            array_push($query, 'per_page='.(int) $opts['perpage']);
+        if(array_key_exists('page', $opts))
+            array_push($query, 'page='.(int) $opts['page']);
 
-        return array_map(function ($server) {
-            return new FirewallEntity($server);
-        }, $servers);
+        $q = implode('&', $query);
+
+        if(isset($q))
+            $q = sprintf('%s/firewall_policies', self::ENDPOINT) . '?'.$q;
+        else
+            $q = sprintf('%s/firewall_policies', self::ENDPOINT);
+
+        $firewalls = $this->adapter->get($q);
+
+        if($this->contenttype == 'json')
+        {
+            return $firewalls;
+        }
+
+        return array_map(function ($firewall) {
+            return new FirewallEntity($firewall);
+        }, $firewalls);
     }
 
     /**
@@ -38,12 +56,12 @@ class FirewallPolicy extends AbstractApi
      *
      * @throws \RuntimeException
      *
-     * @return serverEntity
+     * @return FirewallEntity
      */
     public function getById($id)
     {
-        $server = $this->adapter->get(sprintf('%s/firewall_policies/%s', self::ENDPOINT, $id));
-        return new FirewallEntity($server);
+        $firewall = $this->adapter->get(sprintf('%s/firewall_policies/%s', self::ENDPOINT, $id));
+        return new FirewallEntity($firewall);
     }
 
     public function getServerIPs($id)

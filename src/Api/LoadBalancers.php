@@ -26,11 +26,9 @@ class LoadBalancers extends AbstractApi
      */
     public function getAll()
     {
-        $images = $this->adapter->get(sprintf('%s/images', self::ENDPOINT));
+        $images = $this->adapter->get(sprintf('%s/load_balancers', self::ENDPOINT));
 
-        return array_map(function ($image) {
-            return new ImageEntity($image);
-        }, $images);
+        return $images;
     }
 
     /**

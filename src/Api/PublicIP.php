@@ -28,6 +28,8 @@ class PublicIP extends AbstractApi
     {
         $ips = $this->adapter->get(sprintf('%s/public_ips', self::ENDPOINT));
 
+        return $ips;
+
         return array_map(function ($ip) {
             return new PublicIPEntity($ip);
         }, $ips);

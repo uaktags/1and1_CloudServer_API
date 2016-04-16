@@ -27,7 +27,6 @@ class Appliance extends AbstractEntity
 	public $minHddSize;
 	public $licenses;
 	public $automaticInstallation = true;
-    public $region;
     /**
      * @param \stdClass|array $parameters
      */

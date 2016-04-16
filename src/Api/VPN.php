@@ -11,23 +11,19 @@
 
 namespace NGCSv1\Api;
 
-use NGCSv1\Entity\Appliance as ApplianceEntity;
-
 /**
  * @author Tim Garrity <timgarrity89@gmail.com>
  */
-class ServerAppliances extends AbstractApi
+class VPN extends AbstractApi
 {
     /**
-     * @return serverEntity[]
+     * @return logEntity[]
      */
     public function getAll()
     {
-        $servers = $this->adapter->get(sprintf('%s/server_appliances', self::ENDPOINT));
+        $logs = $this->adapter->get(sprintf('%s/vpn', self::ENDPOINT));
 
-        return array_map(function ($server) {
-            return new ApplianceEntity($server);
-        }, $servers);
+        return $logs;
     }
 
     /**
@@ -35,11 +31,11 @@ class ServerAppliances extends AbstractApi
      *
      * @throws \RuntimeException
      *
-     * @return serverEntity
+     * @return logEntity
      */
     public function getById($id)
     {
-        $server = $this->adapter->get(sprintf('%s/server_appliances/%s', self::ENDPOINT, $id));
-        return new ApplianceEntity($server);
+        $log = $this->adapter->get(sprintf('%s/logs/%s', self::ENDPOINT, $id));
+        return new LogEntity($log);
     }
 }

@@ -21,13 +21,31 @@ class DVD extends AbstractApi
     /**
      * @return dvdEntity[]
      */
-    public function getAll()
+    public function getAll($opts = array())
     {
-        $servers = $this->adapter->get(sprintf('%s/dvd_isos', self::ENDPOINT));
+        $query = array();
+        if(array_key_exists('perpage', $opts))
+            array_push($query, 'per_page='.(int) $opts['perpage']);
+        if(array_key_exists('page', $opts))
+            array_push($query, 'page='.(int) $opts['page']);
 
-        return array_map(function ($server) {
-            return new DVDEntity($server);
-        }, $servers);
+        $q = implode('&', $query);
+
+        if(isset($q))
+            $q = sprintf('%s/dvd_isos', self::ENDPOINT) . '?'.$q;
+        else
+            $q = sprintf('%s/dvd_isos', self::ENDPOINT);
+
+        $dvds = $this->adapter->get($q);
+
+        if($this->contenttype == 'json')
+        {
+            return $dvds;
+        }
+
+        return array_map(function ($dvd) {
+            return new DVDEntity($dvd);
+        }, $dvds);
     }
 
     /**
@@ -39,7 +57,7 @@ class DVD extends AbstractApi
      */
     public function getById($id)
     {
-        $server = $this->adapter->get(sprintf('%s/dvd_isos/%s', self::ENDPOINT, $id));
-        return new DVDEntity($server);
+        $dvd = $this->adapter->get(sprintf('%s/dvd_isos/%s', self::ENDPOINT, $id));
+        return new DVDEntity($dvd);
     }
 }

@@ -35,6 +35,11 @@ abstract class AbstractApi
     protected $meta;
 
     /**
+     * @var ContentType
+     */
+    public $contenttype;
+
+    /**
      * @param AdapterInterface $adapter
      */
     public function __construct(AdapterInterface $adapter)

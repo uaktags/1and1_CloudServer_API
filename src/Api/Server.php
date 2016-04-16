@@ -30,9 +30,22 @@ class Server extends AbstractApi
      * @param bool|false $detail //Warning this could create a lot of requests.
      * @return array
      */
-    public function getAll($detail = false)
+    public function getAll($detail = false, $opts = array())
     {
-        $servers = $this->adapter->get(sprintf('%s/servers', self::ENDPOINT));
+        $query = array();
+        if(array_key_exists('perpage', $opts))
+            array_push($query, 'per_page='.(int) $opts['perpage']);
+        if(array_key_exists('page', $opts))
+            array_push($query, 'page='.(int) $opts['page']);
+
+        $q = implode('&', $query);
+
+        if(isset($q))
+            $q = sprintf('%s/servers', self::ENDPOINT) . '?'.$q;
+        else
+            $q = sprintf('%s/servers', self::ENDPOINT);
+
+        $servers = $this->adapter->get($q);
 
         if($detail)
         {
@@ -47,6 +60,10 @@ class Server extends AbstractApi
                 }
                 $int++;
             }
+        }
+        if($this->contenttype == 'json')
+        {
+            return $servers;
         }
         return array_map(function ($server) {
             return new serverEntity($server);
@@ -63,6 +80,10 @@ class Server extends AbstractApi
     public function getById($id)
     {
         $server = $this->adapter->get(sprintf('%s/servers/%s', self::ENDPOINT, $id));
+        if($this->contenttype == 'json')
+        {
+            return json_encode($server);
+        }
         return new serverEntity($server);
     }
 
@@ -81,34 +102,41 @@ class Server extends AbstractApi
      *
      * @return serverEntity
      */
-    public function create($name ='New Server', $hardware, $appliance, $description='', $password ='', $power=true, $firewall=0, $ip=0, $loadbalance=0, $monitor=0)
+    public function create($name ='New Server', $opts = array())
     {
+        //$hardware, $appliance, $description='', $password ='', $power=true, $firewall=0, $ip=0, $loadbalance=0, $monitor=0
         $headers = array('Content-Type: application/json');
 
         $data = array(
-            'name'=>$name,
-            'hardware'=>$hardware,
-            'appliance_id'=>$appliance,
-            'password'=>$password,
-            'description'=>$description,
-            'power_on'=>$power
+            'name'=>$opts['name'],
+            'hardware'=>$opts['hardware'],
+            'appliance_id'=>$opts['appliance'],
+            'password'=>$opts['password'],
+            'description'=>$opts['description'],
+            'power_on'=>$opts['power']
         );
 
-        if($firewall !=0)
-            $data['firewall_policy_id']=$firewall;
+        if($opts['firewall'] !=0)
+            $data['firewall_policy_id']=$opts['firewall'];
 
-        if($ip!=0)
-            $data['ip_id']=$ip;
+        if($opts['ip']!=0)
+            $data['ip_id']=$opts['ip'];
 
-        if($loadbalance!=0)
-            $data['load_balancer_id'] = $loadbalance;
+        if($opts['loadbalance']!=0)
+            $data['load_balancer_id'] = $opts['loadbalance'];
 
-        if($monitor!=0)
-            $data['monitoring_policy_id']=$monitor;
+        if($opts['monitor']!=0)
+            $data['monitoring_policy_id']=$opts['monitor'];
+
         $content = json_encode($data);
-        return $this->adapter->post(sprintf('%s/servers', self::ENDPOINT),  $content);
-        //$server = json_decode($server);
-        //return new serverEntity($server['body']);
+        $server = $this->adapter->post(sprintf('%s/servers', self::ENDPOINT),  $content);
+
+        if($this->contenttype == 'json')
+        {
+            return $server;
+        }
+
+        return new serverEntity($server->server);
     }
 
     /**
@@ -130,7 +158,7 @@ class Server extends AbstractApi
         $content = array(
             'name' => $name
         );
-        return $this->adapter->put(sprintf('%s/servers/%s?server_id={$id}', self::ENDPOINT, $id), $content);
+        $this->adapter->put(sprintf('%s/servers/%s?server_id={$id}', self::ENDPOINT, $id), $content);
     }
 
     /**
@@ -488,7 +516,7 @@ class Server extends AbstractApi
      *
      *
      */
-    public function powerOffServer($id, $action = 'POWER_OFF', $method='HARDWARE')
+    public function powerOffServer($id, $action, $method)
     {
         //$action = POWER_ON, POWER_OFF, REBOOT
         //$method = "SOFTWARE, HARDWARE

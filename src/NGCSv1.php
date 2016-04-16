@@ -26,7 +26,8 @@ use NGCSv1\Api\ServerAppliances;
 use NGCSv1\Api\SharedStorages;
 use NGCSv1\Api\Usage;
 use NGCSv1\Api\Users;
-use NGCSv1\Api\Roles;
+use NGCSv1\Api\Ping;
+use NGCSv1\Api\VPN;
 
 
 
@@ -126,11 +127,16 @@ class NGCSv1
 	public function Appliances()
 	{
 		return $this->ServerAppliances();
-    }
+	}
 
-    public function Roles()
-    {
-        return new Roles($this->adapter);
+	public function Ping()
+	{
+		return new Ping($this->adapter);
+	}
+
+	Public Function VPN()
+	{
+		return new VPN($this->adapter);
 	}
 
 }

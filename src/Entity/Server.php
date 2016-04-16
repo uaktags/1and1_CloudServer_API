@@ -96,6 +96,11 @@ class Server extends AbstractEntity
      */
     public $privateNetworks;
 
+    /**
+     * @var
+     */
+    public $datacenter;
+
 
     /**
      * @param \stdClass|array $parameters
@@ -134,6 +139,9 @@ class Server extends AbstractEntity
 
                 case 'monitoringPolicy':
                     $this->monitoringPolicy = $value;
+
+                case 'datacenter':
+                    $this->datacenter = $value;
 /*
                 case 'size':
                     if (is_object($value)) {

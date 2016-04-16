@@ -46,30 +46,35 @@ class CurlAdapter extends AbstractAdapter implements AdapterInterface
      */
     public function get($url)
     {
-        $opts = array('http' =>
-            array(
-                'method'  => 'GET',
-                'header'  => 'X-TOKEN: '.$this->api . '; Accept: application/json'
-            )
-        );
+        $request = curl_init();
+        curl_setopt($request, CURLOPT_URL, $url);
+        curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($request, CURLOPT_HTTPHEADER, array("X-TOKEN:". $this->api, "Content-type:application/json"));
+        curl_setopt($request, CURLOPT_CUSTOMREQUEST, "GET");
 
-        $context  = stream_context_create($opts);
+        //Try to get the response
+        $response = curl_exec($request);
+        if ($response == false){
+            return( curl_error($request));
+        }
+        else{
+            return( json_decode($response));
+        }
 
-        $result = file_get_contents('$url', false, $context);
+        curl_close($request);
 
-        die(var_dump($result));
-        return  $server_output ;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function delete($url, $headers = array())
+    public function delete($url, $content = '')
     {
-        $response = Request::delete($url)
+        $response = Request::delete()
             ->addHeader("Accept", "application/json")
             ->addHeader('Content-type', "application/json")
             ->addHeader("X-TOKEN", $this->api)
+            ->body($content)
             ->send();
 
         if($this->isResponseOk($response->code))
@@ -81,7 +86,7 @@ class CurlAdapter extends AbstractAdapter implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function put($url, $headers = array(), $content = '')
+    public function put($url, $content = '')
     {
         $response = Request::put($url)
             ->addHeader("Accept", "application,json")
