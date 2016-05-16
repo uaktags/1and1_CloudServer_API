@@ -28,11 +28,14 @@ class PublicIP extends AbstractApi
     {
         $ips = $this->adapter->get(sprintf('%s/public_ips', self::ENDPOINT));
 
-        return $ips;
+        if($this->contenttype == 'json')
+        {
+            return $ips;
+        }
 
         return array_map(function ($ip) {
             return new PublicIPEntity($ip);
-        }, $ips);
+        }, json_decode($ips));
     }
 
     /**
@@ -42,7 +45,13 @@ class PublicIP extends AbstractApi
     public function getById($id)
     {
         $ip = $this->adapter->get(sprintf('%s/public_ips/%s', self::ENDPOINT, $id));
-        return new PublicIPEntity($ip);
+
+        if($this->contenttype == 'json')
+        {
+            return $ip;
+        }
+
+        return new PublicIPEntity(json_decode($ip));
     }
 
     /**

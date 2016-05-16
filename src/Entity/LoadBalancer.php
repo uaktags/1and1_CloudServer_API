@@ -17,6 +17,10 @@ namespace NGCSv1\Entity;
 class LoadBalancer extends AbstractEntity
 {
     /**
+     * @var object
+     */
+    public $health_check_interval;
+    /**
      * @param \stdClass|array $parameters
      */
     public function build($parameters)

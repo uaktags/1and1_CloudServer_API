@@ -26,9 +26,14 @@ class PrivateNetwork extends AbstractApi
     {
         $privatenetworks = $this->adapter->get(sprintf('%s/private_networks', self::ENDPOINT));
 
+        if($this->contenttype == 'json')
+        {
+            return $privatenetworks;
+        }
+
         return array_map(function ($privatenetwork) {
             return new pNetworkEntity($privatenetwork);
-        }, $privatenetworks);
+        }, json_decode($privatenetworks));
     }
 
     /**
@@ -41,7 +46,13 @@ class PrivateNetwork extends AbstractApi
     public function getById($id)
     {
         $privatenetwork = $this->adapter->get(sprintf('%s/private_networks/%s', self::ENDPOINT, $id));
-        return new pNetworkEntity($privatenetwork);
+
+        if($this->contenttype == 'json')
+        {
+            return $privatenetwork;
+        }
+
+        return new pNetworkEntity(json_decode($privatenetwork));
     }
 
     /**
@@ -53,7 +64,13 @@ class PrivateNetwork extends AbstractApi
     public function getServersByNetworkId($id)
     {
         $servers = $this->adapter->get(sprintf('%s/private_networks/%s/servers', self::ENDPOINT, $id));
-        return new server($servers);
+
+        if($this->contenttype == 'json')
+        {
+            return $servers;
+        }
+
+        return new server(json_decode($servers));
     }
 
     /**
@@ -66,7 +83,13 @@ class PrivateNetwork extends AbstractApi
     public function getServerByIdByNetworkId($sid, $netid)
     {
         $server = $this->adapter->get(sprintf('%s/private_networks/%s/servers/%s', self::ENDPOINT, $netid, $sid));
-        return new server($server);
+
+        if($this->contenttype == 'json')
+        {
+            return $server;
+        }
+
+        return new server(json_decode($server));
     }
 
     public function create($name, $desc = '')

@@ -13,6 +13,7 @@ namespace NGCSv1\Api;
 
 use NGCSv1\Entity\Action as ActionEntity;
 use NGCSv1\Entity\Image as ImageEntity;
+use NGCSv1\Entity\LoadBalancer;
 
 /**
  * @author Tim Garrity <timgarrity89@gmail.com>
@@ -24,11 +25,29 @@ class LoadBalancers extends AbstractApi
      *
      * @return ImageEntity[]
      */
-    public function getAll()
+    public function getAll($detail = false, $opts = array())
     {
-        $images = $this->adapter->get(sprintf('%s/load_balancers', self::ENDPOINT));
+        $query = array();
+        if(array_key_exists('perpage', $opts))
+            array_push($query, 'per_page='.(int) $opts['perpage']);
+        if(array_key_exists('page', $opts))
+            array_push($query, 'page='.(int) $opts['page']);
 
-        return $images;
+        $q = implode('&', $query);
+
+        if(isset($q))
+            $q = sprintf('%s/load_balancers', self::ENDPOINT) . '?'.$q;
+        else
+            $q = sprintf('%s/load_balancers', self::ENDPOINT);
+
+        $loadbalancers = $this->adapter->get($q);
+
+        if($this->contenttype =="json")
+            return $loadbalancers;
+
+        return array_map(function ($server) {
+            return new LoadBalancer($server);
+        }, json_decode($loadbalancers));
     }
 
     /**

@@ -25,9 +25,14 @@ class Image extends AbstractApi
     {
         $images = $this->adapter->get(sprintf('%s/images', self::ENDPOINT));
 
+        if($this->contenttype == 'json')
+        {
+            return $images;
+        }
+
         return array_map(function ($image) {
             return new ImageEntity($image);
-        }, $images);
+        }, json_decode($images));
     }
 
     /**
@@ -39,7 +44,12 @@ class Image extends AbstractApi
     {
         $image = $this->adapter->get(sprintf('%s/images/%s', self::ENDPOINT, $id));
 
-        return new ImageEntity($image);
+        if($this->contenttype == 'json')
+        {
+            return $image;
+        }
+
+        return new ImageEntity(json_decode($image));
     }
 
     public function create($serverID, $name, $frequency, $num_images, $description = Null)

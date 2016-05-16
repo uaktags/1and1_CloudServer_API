@@ -29,9 +29,14 @@ class MonitoringPolicy extends AbstractApi
     {
         $monitors = $this->adapter->get(sprintf('%s/monitoring_policies', self::ENDPOINT));
 
+        if($this->contenttype == 'json')
+        {
+            return $monitors;
+        }
+
         return array_map(function ($monitor) {
             return new MonitorPolicy($monitor);
-        }, $monitors);
+        }, json_decode($monitors));
     }
 
     /**
@@ -43,7 +48,12 @@ class MonitoringPolicy extends AbstractApi
     {
         $monitor = $this->adapter->get(sprintf('%s/monitoring_policies/%s', self::ENDPOINT, $id));
 
-        return new MonitorPolicy($monitor);
+        if($this->contenttype == 'json')
+        {
+            return $monitor;
+        }
+
+        return new MonitorPolicy(json_decode($monitor));
     }
 
     public function create($serverID)

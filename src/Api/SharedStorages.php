@@ -26,9 +26,14 @@ class SharedStorages extends AbstractApi
     {
         $images = $this->adapter->get(sprintf('%s/shared_storages', self::ENDPOINT));
 
+        if($this->contenttype == 'json')
+        {
+            return $images;
+        }
+
         return array_map(function ($image) {
             return new SharedEntity($image);
-        }, $images);
+        }, json_decode($images));
     }
 
     /**
@@ -40,7 +45,12 @@ class SharedStorages extends AbstractApi
     {
         $image = $this->adapter->get(sprintf('%s/shared_storages/%s', self::ENDPOINT, $id));
 
-        return new SharedEntity($image);
+        if($this->contenttype == 'json')
+        {
+            return $image;
+        }
+
+        return new SharedEntity(json_decode($image));
     }
 
     /**
@@ -123,7 +133,12 @@ class SharedStorages extends AbstractApi
      */
     public function getServers($id)
     {
-        return $this->adapter->get(sprintf('%s/shared_storages/%s/servers', self::ENDPOINT, $id));
+        $servers=$this->adapter->get(sprintf('%s/shared_storages/%s/servers', self::ENDPOINT, $id));
+        if($this->contenttype == 'json')
+        {
+            return $servers;
+        }
+        return json_decode($servers);
     }
 
     /**
@@ -158,9 +173,14 @@ class SharedStorages extends AbstractApi
     {
         $servers = $this->adapter->get(sprintf('%s/shared_storages/%s/servers/%s', self::ENDPOINT, $id, $sid));
 
+        if($this->contenttype == 'json')
+        {
+            return $servers;
+        }
+
         return array_map(function ($server) {
             return new ServerEntity($server);
-        }, $servers);
+        }, json_decode($servers));
     }
 
     /**

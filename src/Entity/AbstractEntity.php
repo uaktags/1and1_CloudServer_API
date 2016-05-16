@@ -56,7 +56,8 @@ abstract class AbstractEntity
     public function __set($property, $value)
     {
         if (!property_exists($this, $property)) {
-            $this->unknownProperties[$property] = $value;
+            //$this->unknownProperties[$property] = $value;
+            $this->{$property}=$value;
         }
     }
 

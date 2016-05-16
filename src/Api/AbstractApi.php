@@ -39,6 +39,10 @@ abstract class AbstractApi
      */
     public $contenttype;
 
+    protected $requestLimit;
+
+    protected $maxRequestLimit;
+
     /**
      * @param AdapterInterface $adapter
      */

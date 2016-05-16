@@ -14,6 +14,29 @@ namespace NGCSv1\Adapter;
 use NGCSv1\Exception\ExceptionInterface;
 use NGCSv1\Exception\ResponseException;
 
+class CurlResponse
+{
+
+    var $headers = array();
+
+    function CurlResponse () {}
+
+    function parse_header ($handle, $header)
+    {
+        $details = explode(":", $header, 2);//split(':', $header, 2);
+
+        if (count($details) == 2)
+        {
+            $key   = trim($details[0]);
+            $value = trim($details[1]);
+
+            $this->headers[$key] = $value;
+        }
+
+        return strlen($header);
+    }
+
+}
 /**
  * @author Tim Garrity <timgarrity89@gmail.com>
  */
@@ -47,18 +70,22 @@ class CurlAdapter extends AbstractAdapter implements AdapterInterface
     public function get($url)
     {
         $request = curl_init();
+        $response = new CurlResponse();
         curl_setopt($request, CURLOPT_URL, $url);
         curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($request, CURLOPT_HEADERFUNCTION, array(&$response, 'parse_header'));
         curl_setopt($request, CURLOPT_HTTPHEADER, array("X-TOKEN:". $this->api, "Content-type:application/json"));
         curl_setopt($request, CURLOPT_CUSTOMREQUEST, "GET");
 
         //Try to get the response
-        $response = curl_exec($request);
-        if ($response == false){
+        $body = curl_exec($request);
+        if ($body == false){
             return( curl_error($request));
         }
         else{
-            return( json_decode($response));
+            $this->maxRequestLimit = $response->headers['X-Rate-Limit-Limit'];
+            $this->requestLimit = $response->headers['X-Rate-Limit-Remaining'];
+            return($body);
         }
 
         curl_close($request);
@@ -70,17 +97,7 @@ class CurlAdapter extends AbstractAdapter implements AdapterInterface
      */
     public function delete($url, $content = '')
     {
-        $response = Request::delete()
-            ->addHeader("Accept", "application/json")
-            ->addHeader('Content-type', "application/json")
-            ->addHeader("X-TOKEN", $this->api)
-            ->body($content)
-            ->send();
 
-        if($this->isResponseOk($response->code))
-        {
-            return $response->body;
-        }
     }
 
     /**
@@ -88,16 +105,7 @@ class CurlAdapter extends AbstractAdapter implements AdapterInterface
      */
     public function put($url, $content = '')
     {
-        $response = Request::put($url)
-            ->addHeader("Accept", "application,json")
-            ->addHeader("X-TOKEN", $this->api)
-            ->body($content)
-            ->send();
 
-        if($this->isResponseOk($response->code))
-        {
-            return $response->body;
-        }
     }
 
     /**
@@ -105,14 +113,7 @@ class CurlAdapter extends AbstractAdapter implements AdapterInterface
      */
     public function post($url, $content = '')
     {
-        $response = Request::post($url)
-            ->addHeader("Accept", "application/json")
-            ->addHeader('Content-type', "application/json")
-            ->addHeader("X-TOKEN", $this->api)
-            ->body($content)
-            ->send();
 
-        return array('code'=>$response->code, 'body'=>$response->body);
     }
 
     public function isResponseOk($code)

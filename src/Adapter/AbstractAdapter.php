@@ -21,6 +21,8 @@ abstract class AbstractAdapter
      */
     protected $accessToken;
 
+    protected $header;
+
     /**
      * @param string $accessToken
      */

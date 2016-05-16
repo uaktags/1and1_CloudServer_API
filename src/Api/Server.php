@@ -13,6 +13,7 @@ namespace NGCSv1\Api;
 
 use NGCSv1\Entity\FirewallPolicy;
 use NGCSv1\Entity\Harddrive;
+use NGCSv1\Entity\Image;
 use NGCSv1\Entity\LoadBalancer;
 use NGCSv1\Entity\PrivateNetwork as PrivateNetworkEntity;
 use NGCSv1\Entity\PublicIP;
@@ -65,9 +66,10 @@ class Server extends AbstractApi
         {
             return $servers;
         }
+
         return array_map(function ($server) {
             return new serverEntity($server);
-        }, $servers);
+        }, json_decode($servers));
     }
 
     /**
@@ -82,9 +84,9 @@ class Server extends AbstractApi
         $server = $this->adapter->get(sprintf('%s/servers/%s', self::ENDPOINT, $id));
         if($this->contenttype == 'json')
         {
-            return json_encode($server);
+            return $server;
         }
-        return new serverEntity($server);
+        return new serverEntity(json_decode($server));
     }
 
     /**
@@ -136,7 +138,7 @@ class Server extends AbstractApi
             return $server;
         }
 
-        return new serverEntity($server->server);
+        return new serverEntity(json_decode($server)->server);
     }
 
     /**
@@ -185,7 +187,13 @@ class Server extends AbstractApi
     public function getHardware($id)
     {
         $server = $this->adapter->get(sprintf('%s/servers/%s/hardware', self::ENDPOINT, $id));
-        return new HardwareEntity($server);
+
+        if($this->contenttype == 'json')
+        {
+            return $server;
+        }
+
+        return new HardwareEntity(json_decode($server));
     }
 
     /**
@@ -195,7 +203,13 @@ class Server extends AbstractApi
     public function getStatus($id)
     {
         $server = $this->adapter->get(sprintf('%s/servers/%s/status', self::ENDPOINT, $id));
-        return new serverEntity($server);
+
+        if($this->contenttype == 'json')
+        {
+            return $server;
+        }
+
+        return new serverEntity(json_decode($server));
     }
 
     /**
@@ -205,7 +219,13 @@ class Server extends AbstractApi
     public function getDVD($id)
     {
         $server = $this->adapter->get(sprintf('%s/servers/%s/dvd', self::ENDPOINT, $id));
-        return new serverEntity($server);
+
+        if($this->contenttype == 'json')
+        {
+            return $server;
+        }
+
+        return new serverEntity(json_decode($server));
     }
 
     /**
@@ -234,7 +254,13 @@ class Server extends AbstractApi
     public function getNetworks($id)
     {
         $server = $this->adapter->get(sprintf('%s/servers/%s/private_networks', self::ENDPOINT, $id));
-        return new serverEntity($server);
+
+        if($this->contenttype == 'json')
+        {
+            return $server;
+        }
+
+        return new serverEntity(json_decode($server));
     }
 
     /**
@@ -245,7 +271,13 @@ class Server extends AbstractApi
     public function addNetworkToServer($id, $networkID)
     {
         $server = $this->adapter->post(sprintf('%s/servers/%s/private_networks', self::ENDPOINT, $id), array('id' => $networkID));
-        return new serverEntity($server);
+
+        if($this->contenttype == 'json')
+        {
+            return $server;
+        }
+
+        return new serverEntity(json_decode($server));
     }
 
     /**
@@ -255,6 +287,12 @@ class Server extends AbstractApi
     public function getSnapshots($id)
     {
         $server = $this->adapter->get(sprintf('%s/servers/%s/snapshots', self::ENDPOINT, $id));
+
+        if($this->contenttype == 'json')
+        {
+            return $server;
+        }
+
         return new serverEntity($server);
     }
 
@@ -266,6 +304,12 @@ class Server extends AbstractApi
     public function getNetworkByID($id, $networkID)
     {
         $server = $this->adapter->get(sprintf('%s/servers/%s/private_networks/%s', self::ENDPOINT, $id, $networkID));
+
+        if($this->contenttype == 'json')
+        {
+            return $server;
+        }
+
         return new PrivateNetworkEntity($server);
     }
 
@@ -289,9 +333,14 @@ class Server extends AbstractApi
     {
         $instances = $this->adapter->get(sprintf('%s/servers/fixed_instance_sizes', self::ENDPOINT));
 
+        if($this->contenttype == 'json')
+        {
+            return $instances;
+        }
+
         return array_map(function ($instance) {
             return new HardwareEntity($instance);
-        }, $instances);
+        }, json_decode($instances));
     }
 
     /**
@@ -302,9 +351,14 @@ class Server extends AbstractApi
     {
         $hdds = $this->adapter->get(sprintf('%s/servers/%s/hardware/hdds/%s', self::ENDPOINT, $id));
 
+        if($this->contenttype == 'json')
+        {
+            return $hdds;
+        }
+
         return array_map(function ($hdd) {
             return new Harddrive($hdd);
-        }, $hdds);
+        }, json_decode($hdds));
     }
 
     /**
@@ -315,7 +369,12 @@ class Server extends AbstractApi
     {
         $hdds = $this->adapter->get(sprintf('%s/servers/%s/hardware/hdds/%s', self::ENDPOINT, $id, $hdd));
 
-        return new Harddrive($hdds);
+        if($this->contenttype == 'json')
+        {
+            return $hdds;
+        }
+
+        return new Harddrive(json_decode($hdds));
     }
 
     /**
@@ -326,7 +385,12 @@ class Server extends AbstractApi
     {
         $image = $this->adapter->get(sprintf('%s/servers/image', self::ENDPOINT));
 
-        return new $image;
+        if($this->contenttype == 'json')
+        {
+            return $image;
+        }
+
+        return new Image(json_decode($image));
     }
 
     /**
@@ -337,9 +401,14 @@ class Server extends AbstractApi
     {
         $ips = $this->adapter->get(sprintf('%s/servers/%s/ips', self::ENDPOINT, $id));
 
+        if($this->contenttype == 'json')
+        {
+            return $ips;
+        }
+
         return array_map(function ($ip) {
             return new PublicIP($ip);
-        }, $ips);
+        }, json_decode($ips));
     }
 
     /**
@@ -350,9 +419,14 @@ class Server extends AbstractApi
     {
         $ips = $this->adapter->get(sprintf('%s/servers/%s/ips/%s', self::ENDPOINT, $id, $ip));
 
+        if($this->contenttype == 'json')
+        {
+            return $ips;
+        }
+
         return array_map(function ($ipid) {
             return new PublicIP($ipid);
-        }, $ips);
+        }, json_decode($ips));
     }
 
     /**
@@ -363,9 +437,14 @@ class Server extends AbstractApi
     {
         $firewalls = $this->adapter->get(sprintf('%s/servers/%s/ips/%s/firewall_policy', self::ENDPOINT, $id, $ip));
 
+        if($this->contenttype == 'json')
+        {
+            return $firewalls;
+        }
+
         return array_map(function ($firewall) {
             return new FirewallPolicy($firewall);
-        }, $firewalls);
+        }, json_decode($firewalls));
     }
 
     /**
@@ -376,9 +455,14 @@ class Server extends AbstractApi
     {
         $balancers = $this->adapter->get(sprintf('%s/servers/%s/ips/%s/load_balancers', self::ENDPOINT, $id, $ip));
 
+        if($this->contenttype == 'json')
+        {
+            return $balancers;
+        }
+
         return array_map(function ($balancer) {
             return new LoadBalancer($balancer);
-        }, $balancers);
+        }, json_decode($balancers));
     }
 
     /**
@@ -389,9 +473,14 @@ class Server extends AbstractApi
     {
         $snaps = $this->adapter->get(sprintf('%s/servers/%s/snapshots', self::ENDPOINT, $id));
 
+        if($this->contenttype == 'json')
+        {
+            return $snaps;
+        }
+
         return array_map(function ($snap) {
             return new Snapshots($snap);
-        }, $snaps);
+        }, json_decode($snaps));
     }
 
     /**
@@ -402,7 +491,7 @@ class Server extends AbstractApi
     {
         $this->adapter->delete(sprintf('%s/servers/%s/hardware/hdds/%s', self::ENDPOINT, $id, $hdd));
 
-        return $this->getByID($id);
+        return $this->getByID(json_decode($id));
     }
 
     /**
@@ -413,7 +502,7 @@ class Server extends AbstractApi
     {
         $this->adapter->delete(sprintf('%s/servers/%s/ips/%s', self::ENDPOINT, $id, $ip), array('keep' => $keep));
 
-        return $this->getByID($id);
+        return $this->getByID(json_decode($id));
     }
 
     /**
@@ -424,7 +513,7 @@ class Server extends AbstractApi
     {
         $this->adapter->delete(sprintf('%s/servers/%s/ips/%s/load_balancers/%s', self::ENDPOINT, $id, $ip, $load));
 
-        return $this->getById($id);
+        return $this->getById(json_decode($id));
     }
 
     /**
@@ -435,7 +524,7 @@ class Server extends AbstractApi
     {
         $this->adapter->delete(sprintf('%s/servers/%s/private_networks/%s', self::ENDPOINT, $id, $priv));
 
-        return $this->getById($id);
+        return $this->getById(json_decode($id));
     }
 
     /**
@@ -446,7 +535,7 @@ class Server extends AbstractApi
     {
         $this->adapter->delete(sprintf('%s/servers/', self::ENDPOINT));
 
-        return $this->getById($id);
+        return $this->getById(json_decode($id));
     }
 
     /**

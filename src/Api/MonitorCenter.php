@@ -26,9 +26,14 @@ class MonitorCenter extends AbstractApi
     {
         $monitor = $this->adapter->get(sprintf('%s/monitoring_center', self::ENDPOINT));
 
+        if($this->contenttype == 'json')
+        {
+            return $monitor;
+        }
+
         return array_map(function ($server) {
             return new MonitorEntity($server);
-        }, $monitor);
+        }, json_decode($monitor));
     }
 
     /**
@@ -41,6 +46,12 @@ class MonitorCenter extends AbstractApi
     public function getById($id)
     {
         $monitor = $this->adapter->get(sprintf('%s/monitoring_center/%s', self::ENDPOINT, $id));
-        return new MonitorEntity($monitor);
+
+        if($this->contenttype == 'json')
+        {
+            return $monitor;
+        }
+
+        return new MonitorEntity(json_decode($monitor));
     }
 }

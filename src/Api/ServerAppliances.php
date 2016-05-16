@@ -19,15 +19,20 @@ use NGCSv1\Entity\Appliance as ApplianceEntity;
 class ServerAppliances extends AbstractApi
 {
     /**
-     * @return serverEntity[]
+     * @return ApplianceEntity[]
      */
     public function getAll()
     {
-        $servers = $this->adapter->get(sprintf('%s/server_appliances', self::ENDPOINT));
+        $applicances = $this->adapter->get(sprintf('%s/server_appliances', self::ENDPOINT));
+
+        if($this->contenttype == 'json')
+        {
+            return $applicances;
+        }
 
         return array_map(function ($server) {
             return new ApplianceEntity($server);
-        }, $servers);
+        }, json_decode($applicances));
     }
 
     /**
@@ -39,7 +44,13 @@ class ServerAppliances extends AbstractApi
      */
     public function getById($id)
     {
-        $server = $this->adapter->get(sprintf('%s/server_appliances/%s', self::ENDPOINT, $id));
-        return new ApplianceEntity($server);
+        $applicances = $this->adapter->get(sprintf('%s/server_appliances/%s', self::ENDPOINT, $id));
+
+        if($this->contenttype == 'json')
+        {
+            return $applicances;
+        }
+
+        return new ApplianceEntity(json_decode($applicances));
     }
 }

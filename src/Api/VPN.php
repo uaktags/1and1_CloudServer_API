@@ -21,9 +21,14 @@ class VPN extends AbstractApi
      */
     public function getAll()
     {
-        $logs = $this->adapter->get(sprintf('%s/vpn', self::ENDPOINT));
+        $logs = $this->adapter->get(sprintf('%s/vpns', self::ENDPOINT));
 
-        return $logs;
+        if($this->contenttype == 'json')
+        {
+            return $logs;
+        }
+
+        return json_decode($logs);
     }
 
     /**
@@ -35,7 +40,13 @@ class VPN extends AbstractApi
      */
     public function getById($id)
     {
-        $log = $this->adapter->get(sprintf('%s/logs/%s', self::ENDPOINT, $id));
-        return new LogEntity($log);
+        $log = $this->adapter->get(sprintf('%s/vpns/%s', self::ENDPOINT, $id));
+
+        if($this->contenttype == 'json')
+        {
+            return $log;
+        }
+
+        return new \VPN(json_decode($log));
     }
 }

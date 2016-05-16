@@ -25,9 +25,14 @@ class Usage extends AbstractApi
     {
         $usage = $this->adapter->get(sprintf('%s/usages', self::ENDPOINT));
 
+        if($this->contenttype == 'json')
+        {
+            return $usage;
+        }
+
         return array_map(function ($usage) {
             return new UsageEntity($usage);
-        }, $usage);
+        }, json_decode($usage));
     }
 
     

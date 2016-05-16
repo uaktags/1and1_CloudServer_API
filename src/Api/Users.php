@@ -25,9 +25,14 @@ class Users extends AbstractApi
     {
         $users = $this->adapter->get(sprintf('%s/Users', self::ENDPOINT));
 
+        if($this->contenttype == 'json')
+        {
+            return $users;
+        }
+
         return array_map(function ($user) {
             return new UserEntity($user);
-        }, $users);
+        }, json_decode($users));
     }
 
     /**
@@ -38,7 +43,13 @@ class Users extends AbstractApi
     public function getById($id)
     {
         $user = $this->adapter->get(sprintf('%s/Users/%s', self::ENDPOINT, $id));
-        return new UserEntity($user);
+
+        if($this->contenttype == 'json')
+        {
+            return $user;
+        }
+
+        return new UserEntity(json_decode($user));
     }
 
     /**
@@ -48,7 +59,13 @@ class Users extends AbstractApi
     public function getApiByUserId($id)
     {
         $user = $this->adapter->get(sprintf('%s/Users/%s/api', self::ENDPOINT, $id));
-        return new UserEntity($user);
+
+        if($this->contenttype == 'json')
+        {
+            return $user;
+        }
+
+        return new UserEntity(json_decode($user));
     }
 
     /**
@@ -58,7 +75,13 @@ class Users extends AbstractApi
     public function getApiKeyByUserId($id)
     {
         $user = $this->adapter->get(sprintf('%s/Users/%s/api/key', self::ENDPOINT, $id));
-        return new UserEntity($user);
+
+        if($this->contenttype == 'json')
+        {
+            return $user;
+        }
+
+        return new UserEntity(json_decode($user));
     }
 
     /**
@@ -68,7 +91,13 @@ class Users extends AbstractApi
     public function getAllowedIpsByUserId($id)
     {
         $user = $this->adapter->get(sprintf('%s/Users/%s/api/ips', self::ENDPOINT, $id));
-        return new UserEntity($user);
+
+        if($this->contenttype == 'json')
+        {
+            return $user;
+        }
+
+        return new UserEntity(json_decode($user));
     }
 
     /**
@@ -79,7 +108,13 @@ class Users extends AbstractApi
     public function removeAllowedIpFromUser($uid, $ip)
     {
         $user = $this->adapter->delete(sprintf('%s/users/%s/api/ips/%s', self::ENDPOINT, $uid, $ip));
-        return new UserEntity($user);
+
+        if($this->contenttype == 'json')
+        {
+            return $user;
+        }
+
+        return new UserEntity(json_decode($user));
     }
 
     /**
@@ -90,7 +125,13 @@ class Users extends AbstractApi
     public function addAllowedIpToUser($uid, $ips =[])
     {
         $user = $this->adapter->post(sprintf('%s/users/%s/api/ips', self::ENDPOINT, $uid), ['ips'=>$ips]);
-        return new UserEntity($user);
+
+        if($this->contenttype == 'json')
+        {
+            return $user;
+        }
+
+        return new UserEntity(json_decode($user));
     }
 
     /**
@@ -100,7 +141,13 @@ class Users extends AbstractApi
     public function changeApiKeyForUser($uid)
     {
         $user = $this->adapter->put(sprintf('%s/users/%s/api/key', self::ENDPOINT, $uid));
-        return new UserEntity($user);
+
+        if($this->contenttype == 'json')
+        {
+            return $user;
+        }
+
+        return new UserEntity(json_decode($user));
     }
 
     /**
@@ -110,7 +157,13 @@ class Users extends AbstractApi
     public function toggleApiforUser($uid)
     {
         $user = $this->adapter->put(sprintf('%s/users/%s/api', self::ENDPOINT, $uid));
-        return new UserEntity($user);
+
+        if($this->contenttype == 'json')
+        {
+            return $user;
+        }
+
+        return new UserEntity(json_decode($user));
     }
 
     /**
@@ -154,7 +207,13 @@ class Users extends AbstractApi
         }
 
         $user = $this->adapter->put(sprintf('%s/users/%s', self::ENDPOINT, $uid), $data);
-        return new UserEntity($user);
+
+        if($this->contenttype == 'json')
+        {
+            return $user;
+        }
+
+        return new UserEntity(json_decode($user));
     }
 
     /**
@@ -164,6 +223,12 @@ class Users extends AbstractApi
     public function deleteUserById($uid)
     {
         $user = $this->adapter->delete(sprintf('%s/users/%s', self::ENDPOINT, $uid));
-        return new UserEntity($user);
+
+        if($this->contenttype == 'json')
+        {
+            return $user;
+        }
+
+        return new UserEntity(json_decode($user));
     }
 }

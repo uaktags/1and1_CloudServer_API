@@ -48,7 +48,7 @@ class FirewallPolicy extends AbstractApi
 
         return array_map(function ($firewall) {
             return new FirewallEntity($firewall);
-        }, $firewalls);
+        }, json_decode($firewalls));
     }
 
     /**
