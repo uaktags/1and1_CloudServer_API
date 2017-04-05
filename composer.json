@@ -1,8 +1,8 @@
 {
     "name"       : "uaktags/ngcsv1",
     "type"       : "library",
-    "description": "1&1 NGCS API v1 PHP 5.4+ library",
-    "keywords"   : ["1&1", "1 and 1", "1and1", "NGCS", "Cloudserver", "Cloud VPS", "API", "Cloud Hosting", "SSD", "VPS"],
+    "description": "1and1 NGCS API v1 PHP 5.4+ library",
+    "keywords"   : ["1 and 1", "1and1", "NGCS", "Cloudserver", "Cloud VPS", "API", "Cloud Hosting", "SSD", "VPS"],
     "homepage"   : "https://github.com/uaktags/NGCSv1",
     "license"    : "MIT",
 
