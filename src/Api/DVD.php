@@ -60,4 +60,28 @@ class DVD extends AbstractApi
         $dvd = $this->adapter->get(sprintf('%s/dvd_isos/%s', self::ENDPOINT, $id));
         return new DVDEntity($dvd);
     }
+
+    /**
+     * @param int $id
+     *
+     * @throws \RuntimeException
+     *
+     * @return DVDEntity
+     */
+    public function get($id = null, $opts = array())
+    {
+        $query = array();
+        if(array_key_exists('perpage', $opts))
+            array_push($query, 'per_page='.(int) $opts['perpage']);
+        if(array_key_exists('page', $opts))
+            array_push($query, 'page='.(int) $opts['page']);
+
+        $q = implode('&', $query);
+
+        if($id == null)
+            $dvd = $this->adapter->get(sprintf('%s/dvd_isos', self::ENDPOINT). (isset($q)?'?' . $q:''));
+        else
+            $dvd = $this->adapter->get(sprintf('%s/dvd_isos/%s', self::ENDPOINT, $id). (isset($q)?'?' . $q:''));
+        return new DVDEntity($dvd);
+    }
 }

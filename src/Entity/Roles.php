@@ -14,7 +14,7 @@ namespace NGCSv1\Entity;
 /**
  * @author Tim Garrity <timgarrity89@gmail.com>
  */
-class Role extends AbstractEntity
+class Roles extends AbstractEntity
 {
     public $id;
 

@@ -11,6 +11,8 @@
 
 namespace NGCSv1\Api;
 
+use NGCSv1\Exception\ResponseException;
+
 /**
  * @author Tim Garrity <timgarrity89@gmail.com>
  */
@@ -21,8 +23,13 @@ class Ping extends AbstractApi
      */
     public function ping_auth()
     {
-        $ping = $this->adapter->get(sprintf('%s/ping_auth', self::ENDPOINT));
-        return json_encode($ping);
+        try {
+            $ping = $this->adapter->get(sprintf('%s/ping_auth', self::ENDPOINT));
+            return json_encode($ping);
+        }
+        catch(ResponseException $e){
+            echo $e->getErrorMessage(true);
+        }
     }
 
     /**

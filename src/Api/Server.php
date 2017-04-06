@@ -69,7 +69,7 @@ class Server extends AbstractApi
 
         return array_map(function ($server) {
             return new serverEntity($server);
-        }, json_decode($servers));
+        }, $servers);
     }
 
     /**

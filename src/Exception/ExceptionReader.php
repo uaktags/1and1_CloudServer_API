@@ -39,9 +39,8 @@ class ExceptionReader
      */
     public function __construct($content, $code = 0)
     {
-        $content = json_decode($content, true);
-        $codeId  = empty($content['id']) ? null : $content['id'];
-        $message = empty($content['message']) ? 'Request not processed.' : $content['message'];
+        $codeId  = empty($code) ? null : $code;
+        $message = empty($content) ? 'Request not processed.' : $content;
 
         // just example to modify message
         $message = str_replace(
@@ -75,8 +74,7 @@ class ExceptionReader
     public function getMessage($includeCodeId = true)
     {
         if ($includeCodeId) {
-            $message = sprintf('%s (%s)', $this->message, $this->id);
-
+            $message = $this->message;
             if ($this->code) {
                 $message = sprintf('[%d] %s', $this->code, $message);
             }

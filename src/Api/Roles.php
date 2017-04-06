@@ -11,7 +11,7 @@
 
 namespace NGCSv1\Api;
 
-use NGCSv1\Entity\Role as RoleEntity;
+use NGCSv1\Entity\Roles as RoleEntity;
 
 /**
  * @author Tim Garrity <timgarrity89@gmail.com>

@@ -18,7 +18,8 @@ use NGCSv1\Api\MonitoringPolicy;
 class Server extends AbstractEntity
 {
     /**
-     * @var int
+     * @var string
+     * Get the ID of the server
      */
     public $id;
 
@@ -139,9 +140,11 @@ class Server extends AbstractEntity
 
                 case 'monitoringPolicy':
                     $this->monitoringPolicy = $value;
+                    break;
 
                 case 'datacenter':
                     $this->datacenter = $value;
+                    break;
 /*
                 case 'size':
                     if (is_object($value)) {
@@ -169,13 +172,6 @@ class Server extends AbstractEntity
                     $this->{\NGCSv1\convert_to_camel_case($property)} = $value;
             }
         }
-
-        /*if (is_array($this->features) && count($this->features)) {
-            $this->backupsEnabled = in_array("backups", $this->features);
-            $this->virtIOEnabled = in_array("virtio", $this->features);
-            $this->privateNetworkingEnabled = in_array("private_networking", $this->features);
-            $this->ipv6Enabled = in_array("ipv6", $this->features);
-        }*/
     }
 
     /**

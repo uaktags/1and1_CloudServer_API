@@ -28,7 +28,7 @@ use NGCSv1\Api\Usage;
 use NGCSv1\Api\Users;
 use NGCSv1\Api\Ping;
 use NGCSv1\Api\VPN;
-
+use NGCSv1\Api\Roles;
 
 
 /**
@@ -138,5 +138,9 @@ class NGCSv1
 	{
 		return new VPN($this->adapter);
 	}
+
+	Public Function Roles(){
+        return new Roles($this->adapter);
+    }
 
 }
